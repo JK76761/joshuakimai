@@ -40,7 +40,7 @@ function FloatingChatLauncherInner({
               <p className="floating-chat-kicker">AI Assistant</p>
               <p className="floating-chat-title">Ask about {developerName}</p>
               <span className="floating-chat-status" data-state="live">
-                Live AI + fallback
+                Live OpenAI
               </span>
             </div>
 

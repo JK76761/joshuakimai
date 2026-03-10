@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { buildContext } from "@/lib/embeddings";
-import { createLocalAssistantAnswer } from "@/lib/local-assistant";
-import { createPortfolioAnswer } from "@/lib/openai";
+import { createPortfolioAnswer, OpenAIRequestError } from "@/lib/openai";
 import type { ChatHistoryMessage } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -47,15 +46,13 @@ export async function POST(request: Request) {
     }
 
     const history = sanitizeHistory(payload.history);
-    const localAnswer = createLocalAssistantAnswer({
-      question: message,
-      history,
-    });
-
     const apiKey = process.env.OPENAI_API_KEY?.trim();
 
     if (!apiKey) {
-      return NextResponse.json({ answer: localAnswer, source: "local" });
+      return NextResponse.json(
+        { error: "OpenAI is not configured for this deployment." },
+        { status: 503 },
+      );
     }
 
     try {
@@ -68,8 +65,19 @@ export async function POST(request: Request) {
 
       return NextResponse.json({ answer, source: "openai" });
     } catch (caughtError) {
-      console.error("OpenAI chat request failed. Falling back to local answer.", caughtError);
-      return NextResponse.json({ answer: localAnswer, source: "local-fallback" });
+      if (caughtError instanceof OpenAIRequestError) {
+        console.error("OpenAI chat request failed.", caughtError);
+        return NextResponse.json(
+          { error: caughtError.message },
+          { status: caughtError.status },
+        );
+      }
+
+      console.error("Unexpected OpenAI chat failure.", caughtError);
+      return NextResponse.json(
+        { error: "OpenAI request could not be completed. Try again shortly." },
+        { status: 502 },
+      );
     }
   } catch {
     return NextResponse.json(

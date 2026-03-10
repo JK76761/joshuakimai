@@ -8,6 +8,5 @@ export async function GET() {
     configured: Boolean(process.env.OPENAI_API_KEY?.trim()),
     model: process.env.OPENAI_MODEL ?? "gpt-4.1-mini",
     provider: "openai",
-    fallback: "local",
   });
 }

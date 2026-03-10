@@ -3,6 +3,16 @@ import type { ChatHistoryMessage } from "@/lib/types";
 const OPENAI_API_URL = "https://api.openai.com/v1/responses";
 const OPENAI_MODEL = process.env.OPENAI_MODEL ?? "gpt-4.1-mini";
 
+export class OpenAIRequestError extends Error {
+  status: number;
+
+  constructor(status: number, message: string) {
+    super(message);
+    this.name = "OpenAIRequestError";
+    this.status = status;
+  }
+}
+
 type CreatePortfolioAnswerInput = {
   question: string;
   context: string;
@@ -20,6 +30,12 @@ type OpenAIOutput = {
 type OpenAIResponse = {
   output_text?: string;
   output?: OpenAIOutput[];
+};
+
+type OpenAIErrorResponse = {
+  error?: {
+    message?: string;
+  };
 };
 
 function mapHistoryForOpenAI(history: ChatHistoryMessage[]) {
@@ -52,7 +68,10 @@ export async function createPortfolioAnswer({
   const apiKey = process.env.OPENAI_API_KEY?.trim();
 
   if (!apiKey) {
-    throw new Error("Missing OPENAI_API_KEY");
+    throw new OpenAIRequestError(
+      503,
+      "OpenAI is not configured for this deployment.",
+    );
   }
 
   const controller = new AbortController();
@@ -85,24 +104,43 @@ export async function createPortfolioAnswer({
     });
   } catch (caughtError) {
     if (caughtError instanceof Error && caughtError.name === "AbortError") {
-      throw new Error("OpenAI request timed out.");
+      throw new OpenAIRequestError(504, "OpenAI request timed out.");
     }
 
-    throw caughtError;
+    throw new OpenAIRequestError(
+      502,
+      "OpenAI request could not be completed. Try again shortly.",
+    );
   } finally {
     clearTimeout(timeoutId);
   }
 
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`OpenAI request failed (${response.status}): ${errorText}`);
+    let message = `OpenAI request failed (${response.status}).`;
+
+    try {
+      const payload = (await response.json()) as OpenAIErrorResponse;
+      const errorMessage = payload.error?.message?.trim();
+
+      if (errorMessage) {
+        message = `OpenAI request failed (${response.status}): ${errorMessage}`;
+      }
+    } catch {
+      const errorText = (await response.text()).trim();
+
+      if (errorText) {
+        message = `OpenAI request failed (${response.status}): ${errorText}`;
+      }
+    }
+
+    throw new OpenAIRequestError(response.status, message);
   }
 
   const payload = (await response.json()) as OpenAIResponse;
   const answer = readTextFromResponse(payload);
 
   if (!answer) {
-    throw new Error("OpenAI returned an empty answer");
+    throw new OpenAIRequestError(502, "OpenAI returned an empty answer.");
   }
 
   return answer;

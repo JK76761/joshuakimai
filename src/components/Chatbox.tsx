@@ -17,6 +17,14 @@ type ChatPayload = {
   error?: string;
 };
 
+type StatusPayload = {
+  configured?: boolean;
+  model?: string;
+  provider?: string;
+};
+
+type AssistantState = "checking" | "ready" | "disabled";
+
 const suggestedQuestions = [
   "What should recruiters know first?",
   "What technologies does Joshua use most?",
@@ -36,25 +44,67 @@ export default function Chatbox({
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [assistantState, setAssistantState] = useState<AssistantState>("checking");
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [sessionDisabled, setSessionDisabled] = useState(false);
   const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
-
-  const canSubmit = useMemo(
-    () => input.trim().length > 0 && !loading,
-    [input, loading],
-  );
   const isEmbedded = mode === "embedded";
   const isLauncher = mode === "launcher";
   const suggestionItems = isLauncher ? suggestedQuestions.slice(0, 2) : suggestedQuestions;
   const introMessage = getIntroMessage(developerName);
+  const isChatDisabled = assistantState !== "ready" || sessionDisabled;
+  const canSubmit = useMemo(
+    () => input.trim().length > 0 && !loading && !isChatDisabled,
+    [input, loading, isChatDisabled],
+  );
 
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
+  useEffect(() => {
+    let active = true;
+
+    async function loadStatus() {
+      try {
+        const response = await fetch("/api/chat/status", {
+          cache: "no-store",
+        });
+        const payload = (await response.json()) as StatusPayload;
+
+        if (!active) {
+          return;
+        }
+
+        if (!response.ok || !payload.configured) {
+          setAssistantState("disabled");
+          setStatusMessage("OpenAI is not configured for this deployment.");
+          return;
+        }
+
+        setAssistantState("ready");
+        setStatusMessage(null);
+      } catch {
+        if (!active) {
+          return;
+        }
+
+        setAssistantState("disabled");
+        setStatusMessage("OpenAI is not configured for this deployment.");
+      }
+    }
+
+    void loadStatus();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   async function sendMessage(content: string) {
     const trimmed = content.trim();
 
-    if (!trimmed || loading) {
+    if (!trimmed || loading || isChatDisabled) {
       return;
     }
 
@@ -100,14 +150,15 @@ export default function Chatbox({
       const message =
         caughtError instanceof Error
           ? caughtError.message
-          : "I could not reach the assistant. Check API settings and try again.";
+          : "OpenAI request could not be completed. Try again shortly.";
 
       setError(message);
+      setSessionDisabled(true);
       setMessages((current) => [
         ...current,
         {
           role: "assistant",
-          content: `Request failed: ${message}`,
+          content: `OpenAI chat is unavailable right now. ${message}`,
         },
       ]);
     } finally {
@@ -133,7 +184,7 @@ export default function Chatbox({
             key={question}
             type="button"
             onClick={() => sendMessage(question)}
-            disabled={loading}
+            disabled={loading || isChatDisabled}
             className="chat-chip px-3 py-1 text-xs font-semibold"
           >
             {question}
@@ -194,9 +245,13 @@ export default function Chatbox({
             }
           }}
           rows={isLauncher ? 2 : isEmbedded ? 2 : 3}
-          disabled={loading}
+          disabled={loading || isChatDisabled}
           placeholder={
-            "Ask about Joshua's projects, stack, experience, or career focus..."
+            assistantState === "disabled"
+              ? "OpenAI is not configured for this deployment."
+              : sessionDisabled
+                ? "OpenAI chat is currently unavailable."
+                : "Ask about Joshua's projects, stack, experience, or career focus..."
           }
           className="chat-textarea w-full resize-none rounded-2xl px-4 py-3 text-sm outline-none transition"
         />
@@ -218,6 +273,10 @@ export default function Chatbox({
           </button>
         </div>
 
+        {assistantState === "checking" ? (
+          <p className="text-xs text-slate-500">Checking OpenAI setup...</p>
+        ) : null}
+        {statusMessage ? <p className="text-xs text-amber-200">{statusMessage}</p> : null}
         {error ? <p className="text-xs text-rose-300">{error}</p> : null}
       </form>
     </section>

@@ -16,7 +16,7 @@ A modern developer portfolio for Joshua Kim, showcasing projects, experience, te
 - Floating AI assistant launcher
 - Dedicated AI assistant page
 - Portfolio content stored in JSON files
-- OpenAI-powered chat with local portfolio fallback
+- OpenAI-powered chat assistant
 
 ## Local Development
 
@@ -36,5 +36,5 @@ OPENAI_MODEL=gpt-4.1-mini
 
 Deploy directly to Vercel.
 
-- `OPENAI_API_KEY` is optional but required for live OpenAI answers.
-- Without it, the assistant falls back to local portfolio data.
+- `OPENAI_API_KEY` is required for the AI assistant.
+- `OPENAI_MODEL` is optional and defaults to `gpt-4.1-mini`.

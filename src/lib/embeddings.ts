@@ -47,7 +47,7 @@ const knowledgeBase: KnowledgeChunk[] = [
     id: "ai",
     content: `This portfolio includes an AI assistant. The assistant uses portfolio context about ${getDisplayName(
       profile.name,
-    )}'s projects, experience, education, availability, and tech stack, with local fallback data available if live AI is unavailable.`,
+    )}'s projects, experience, education, availability, and tech stack to answer questions with OpenAI.`,
   },
   ...projects.map((project) => ({
     id: `project:${project.id}`,

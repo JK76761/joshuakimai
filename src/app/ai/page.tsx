@@ -16,11 +16,11 @@ export default function AIAssistantPage() {
         <h1 className="section-title">AI Assistant</h1>
         <p className="section-copy">
           Ask about {displayName}&apos;s projects, experience, technical strengths,
-          and career focus. This assistant uses OpenAI when configured and falls back to
-          structured portfolio data if live AI is unavailable.
+          and career focus. This assistant uses OpenAI to answer recruiter and project
+          questions directly from Joshua&apos;s portfolio context.
         </p>
         <p className="status-note" data-state="live">
-          OpenAI ready with local fallback
+          OpenAI-powered Q&amp;A
         </p>
       </header>
 
