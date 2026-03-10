@@ -17,10 +17,11 @@ export default function AIAssistantPage() {
         <p className="section-copy">
           Ask about {displayName}&apos;s projects, experience, technical strengths,
           and career focus. This assistant uses OpenAI to answer recruiter and project
-          questions directly from Joshua&apos;s portfolio context.
+          questions directly from Joshua&apos;s portfolio context and is rate limited for
+          abuse protection.
         </p>
         <p className="status-note" data-state="live">
-          OpenAI-powered Q&amp;A
+          OpenAI-powered, portfolio-scoped, rate limited
         </p>
       </header>
 

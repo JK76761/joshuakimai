@@ -14,7 +14,7 @@ export default function FloatingChatLauncher({
 }: FloatingChatLauncherProps) {
   const pathname = usePathname();
 
-  if (pathname === "/ai") {
+  if (pathname === "/ai" || pathname === "/") {
     return null;
   }
 

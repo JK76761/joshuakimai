@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { buildContext } from "@/lib/embeddings";
 import { profile } from "@/lib/data";
 import { createPortfolioAnswer, OpenAIRequestError } from "@/lib/openai";
+import { consumeChatRateLimit, type RateLimitResult } from "@/lib/rate-limit";
 import type { ChatHistoryMessage } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -48,8 +49,32 @@ function sanitizeHistory(history: ChatRequest["history"]): ChatHistoryMessage[] 
     .slice(-8);
 }
 
+function buildRateLimitHeaders(rateLimit: RateLimitResult): HeadersInit {
+  return {
+    "X-RateLimit-Limit": String(rateLimit.limit),
+    "X-RateLimit-Remaining": String(rateLimit.remaining),
+    "X-RateLimit-Reset": String(rateLimit.resetAt),
+    "Retry-After": String(rateLimit.retryAfter),
+  };
+}
+
 export async function POST(request: Request) {
   try {
+    const rateLimit = consumeChatRateLimit(request);
+
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        {
+          error:
+            "This AI assistant is rate limited for abuse protection. Please wait a few minutes and try again.",
+        },
+        {
+          status: 429,
+          headers: buildRateLimitHeaders(rateLimit),
+        },
+      );
+    }
+
     const payload = (await request.json()) as ChatRequest;
     const message = payload.message?.trim();
 
@@ -63,7 +88,10 @@ export async function POST(request: Request) {
     const guardedAnswer = getGuardedAnswer(message);
 
     if (guardedAnswer) {
-      return NextResponse.json({ answer: guardedAnswer, source: "policy" });
+      return NextResponse.json(
+        { answer: guardedAnswer, source: "policy" },
+        { headers: buildRateLimitHeaders(rateLimit) },
+      );
     }
 
     const history = sanitizeHistory(payload.history);
@@ -72,7 +100,7 @@ export async function POST(request: Request) {
     if (!apiKey) {
       return NextResponse.json(
         { error: "OpenAI is not configured for this deployment." },
-        { status: 503 },
+        { status: 503, headers: buildRateLimitHeaders(rateLimit) },
       );
     }
 
@@ -84,20 +112,23 @@ export async function POST(request: Request) {
         history,
       });
 
-      return NextResponse.json({ answer, source: "openai" });
+      return NextResponse.json(
+        { answer, source: "openai" },
+        { headers: buildRateLimitHeaders(rateLimit) },
+      );
     } catch (caughtError) {
       if (caughtError instanceof OpenAIRequestError) {
         console.error("OpenAI chat request failed.", caughtError);
         return NextResponse.json(
           { error: caughtError.message },
-          { status: caughtError.status },
+          { status: caughtError.status, headers: buildRateLimitHeaders(rateLimit) },
         );
       }
 
       console.error("Unexpected OpenAI chat failure.", caughtError);
       return NextResponse.json(
         { error: "OpenAI request could not be completed. Try again shortly." },
-        { status: 502 },
+        { status: 502, headers: buildRateLimitHeaders(rateLimit) },
       );
     }
   } catch {

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Chatbox from "@/components/Chatbox";
 import CopyEmailButton from "@/components/CopyEmailButton";
 import HomeNavbar from "@/components/HomeNavbar";
 import ProjectCard from "@/components/ProjectCard";
@@ -22,7 +23,7 @@ export default function HomePage() {
       </section>
 
       <section id="hero" className="page-fade stagger-1 space-y-6">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.9fr)] lg:items-center">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(340px,1.1fr)] lg:items-start">
           <div className="max-w-4xl space-y-4">
             <p className="section-kicker">{profile.location}</p>
             <h1 className="font-display text-5xl font-semibold tracking-tight text-slate-50 sm:text-6xl">
@@ -37,6 +38,9 @@ export default function HomePage() {
             </p>
 
             <div className="flex flex-wrap gap-3 pt-2">
+              <a href="#hero-ai" className="cta-primary">
+                Try AI Assistant
+              </a>
               <a href="#projects" className="cta-primary">
                 View Projects
               </a>
@@ -48,14 +52,6 @@ export default function HomePage() {
               >
                 View CV
               </a>
-            </div>
-
-            <div className="hero-ai-inline">
-              <span className="hero-ai-dot" aria-hidden="true" />
-              <p className="hero-ai-copy">
-                AI assistant available from the chat icon for quick questions about
-                projects, experience, and technical stack.
-              </p>
             </div>
 
             <div className="flex flex-wrap gap-5 pt-3 text-sm font-semibold text-slate-400">
@@ -71,6 +67,51 @@ export default function HomePage() {
                 </a>
               ))}
             </div>
+
+            <p className="hero-proof-copy">
+              Live OpenAI assistant built into the homepage, scoped to portfolio data,
+              rate limited for abuse protection, and ready for edge bot protection on
+              the production domain.
+            </p>
+          </div>
+
+          <div id="hero-ai" className="hero-ai-feature">
+            <div className="hero-ai-feature-head">
+              <div className="space-y-3">
+                <p className="section-kicker">Hero Feature</p>
+                <h2 className="hero-ai-feature-title">Talk to the AI assistant</h2>
+                <p className="hero-ai-feature-copy">
+                  Ask about projects, experience, stack choices, career direction, and
+                  how this portfolio uses AI.
+                </p>
+              </div>
+
+              <div className="hero-ai-badges">
+                <span className="hero-ai-badge">OpenAI</span>
+                <span className="hero-ai-badge">Portfolio scoped</span>
+                <span className="hero-ai-badge">Rate limited</span>
+              </div>
+            </div>
+
+            <Chatbox developerName={displayName} mode="embedded" />
+
+            <p className="hero-ai-footnote">
+              The assistant is rate limited for abuse protection. Additional bot
+              protection can be layered at the edge when the custom domain is proxied.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="page-fade stagger-2 section-block space-y-8">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(320px,1.1fr)] lg:items-center">
+          <div className="space-y-4">
+            <p className="section-kicker">Core Stack</p>
+            <h2 className="section-title">Readable engineering focus</h2>
+            <p className="section-copy max-w-2xl">
+              The homepage now leads with the AI assistant, while Joshua Kim&apos;s
+              stack and engineering focus stay visible in a cleaner secondary section.
+            </p>
           </div>
 
           <StackIconsShowcase />
