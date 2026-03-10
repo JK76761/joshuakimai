@@ -36,27 +36,8 @@ function FloatingChatLauncherInner({
       {isOpen ? (
         <div id="floating-ai-assistant" className="floating-chat-panel">
           <div className="floating-chat-header">
-            <div className="floating-chat-header-main">
-              <div className="floating-chat-header-top">
-                <p className="floating-chat-kicker">AI Assistant</p>
-                <span className="floating-chat-status" data-state="live">
-                  <span className="floating-chat-status-dot" aria-hidden="true" />
-                  OpenAI Live
-                </span>
-              </div>
-
-              <div className="space-y-1">
-                <p className="floating-chat-title">Ask about {developerName}</p>
-                <p className="floating-chat-copy">
-                  Projects, experience, technical stack, and current career focus.
-                </p>
-              </div>
-            </div>
-
-            <div className="floating-chat-actions">
-              <Link href="/ai" className="floating-chat-link">
-                Open full page
-              </Link>
+            <div className="floating-chat-header-top">
+              <p className="floating-chat-kicker">AI Assistant</p>
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
@@ -72,6 +53,21 @@ function FloatingChatLauncherInner({
                   />
                 </svg>
               </button>
+            </div>
+
+            <div className="space-y-2">
+              <p className="floating-chat-title">Ask about {developerName}</p>
+
+              <div className="floating-chat-meta">
+                <span className="floating-chat-status" data-state="live">
+                  <span className="floating-chat-status-dot" aria-hidden="true" />
+                  OpenAI Live
+                </span>
+
+                <Link href="/ai" className="floating-chat-link-inline">
+                  Open full page
+                </Link>
+              </div>
             </div>
           </div>
 

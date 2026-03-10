@@ -26,10 +26,41 @@ type StatusPayload = {
 type AssistantState = "checking" | "ready" | "disabled";
 
 const suggestedQuestions = [
-  "What should recruiters know first?",
-  "What technologies does Joshua use most?",
-  "Tell me about Joshua's internship experience.",
-  "What role is Joshua currently looking for?",
+  {
+    label: "Recruiters",
+    prompt: "What should recruiters know first?",
+  },
+  {
+    label: "Tech Stack",
+    prompt: "What technologies does Joshua use most?",
+  },
+  {
+    label: "Experience",
+    prompt: "Tell me about Joshua's internship experience.",
+  },
+  {
+    label: "Career",
+    prompt: "What role is Joshua currently looking for?",
+  },
+];
+
+const launcherCategories = [
+  {
+    label: "Projects",
+    prompt: "Which projects best represent Joshua Kim's work?",
+  },
+  {
+    label: "Experience",
+    prompt: "Tell me about Joshua's internship experience.",
+  },
+  {
+    label: "Stack",
+    prompt: "What technologies does Joshua use most?",
+  },
+  {
+    label: "AI Use",
+    prompt: "How is AI used in this portfolio?",
+  },
 ];
 
 function getIntroMessage(developerName: string, isLauncher: boolean): string {
@@ -54,7 +85,7 @@ export default function Chatbox({
   const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
   const isEmbedded = mode === "embedded";
   const isLauncher = mode === "launcher";
-  const suggestionItems = isLauncher ? suggestedQuestions.slice(0, 2) : suggestedQuestions;
+  const suggestionItems = isLauncher ? launcherCategories : suggestedQuestions;
   const introMessage = getIntroMessage(developerName, isLauncher);
   const isChatDisabled = assistantState !== "ready" || sessionDisabled;
   const canSubmit = useMemo(
@@ -182,18 +213,26 @@ export default function Chatbox({
         isLauncher ? "p-3 sm:p-4" : isEmbedded ? "p-4" : "p-4 sm:p-6"
       }`}
     >
-      <div className="mb-4 flex flex-wrap gap-2">
-        {suggestionItems.map((question) => (
+      <div className="mb-4 space-y-2">
+        {isLauncher ? (
+          <p className="chat-section-label">Quick topics</p>
+        ) : null}
+
+        <div className="flex flex-wrap gap-2">
+          {suggestionItems.map((item) => (
           <button
-            key={question}
+            key={item.label}
             type="button"
-            onClick={() => sendMessage(question)}
+            onClick={() => sendMessage(item.prompt)}
             disabled={loading || isChatDisabled}
-            className="chat-chip px-3 py-1 text-xs font-semibold"
+            className={`chat-chip px-3 py-1 text-xs font-semibold ${
+              isLauncher ? "chat-chip-category" : ""
+            }`}
           >
-            {question}
+            {item.label}
           </button>
-        ))}
+          ))}
+        </div>
       </div>
 
       <div
