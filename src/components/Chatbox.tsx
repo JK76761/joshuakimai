@@ -9,7 +9,6 @@ type Message = {
 
 type ChatboxProps = {
   developerName: string;
-  isConfigured: boolean;
   mode?: "full" | "embedded" | "launcher";
 };
 
@@ -18,82 +17,44 @@ type ChatPayload = {
   error?: string;
 };
 
-type ChatStatusPayload = {
-  configured?: boolean;
-};
-
 const suggestedQuestions = [
-  "How is AI used in this portfolio?",
+  "What should recruiters know first?",
   "What technologies does Joshua use most?",
   "Tell me about Joshua's internship experience.",
   "What role is Joshua currently looking for?",
 ];
 
-function getIntroMessage(developerName: string, configured: boolean): string {
-  return configured
-    ? `Hi, I'm ${developerName}'s AI portfolio assistant. Ask about projects, experience, skills, or how AI is used in this site.`
-    : "Live OpenAI chat is currently disabled. Add OPENAI_API_KEY to .env.local or Vercel project settings to enable it.";
+function getIntroMessage(developerName: string): string {
+  return `Hi, I'm ${developerName}'s portfolio assistant. Ask about projects, experience, technical strengths, or current career focus.`;
 }
 
 export default function Chatbox({
   developerName,
-  isConfigured,
   mode = "full",
 }: ChatboxProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [runtimeConfigured, setRuntimeConfigured] = useState(isConfigured);
   const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
 
   const canSubmit = useMemo(
-    () => runtimeConfigured && input.trim().length > 0 && !loading,
-    [input, loading, runtimeConfigured],
+    () => input.trim().length > 0 && !loading,
+    [input, loading],
   );
   const isEmbedded = mode === "embedded";
   const isLauncher = mode === "launcher";
   const suggestionItems = isLauncher ? suggestedQuestions.slice(0, 2) : suggestedQuestions;
-  const introMessage = getIntroMessage(developerName, runtimeConfigured);
+  const introMessage = getIntroMessage(developerName);
 
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
-  useEffect(() => {
-    let isCancelled = false;
-
-    async function loadStatus() {
-      try {
-        const response = await fetch("/api/chat/status", {
-          cache: "no-store",
-        });
-
-        if (!response.ok) {
-          return;
-        }
-
-        const payload = (await response.json()) as ChatStatusPayload;
-
-        if (!isCancelled && typeof payload.configured === "boolean") {
-          setRuntimeConfigured(payload.configured);
-        }
-      } catch {
-        // Keep the server-provided fallback state if status lookup fails.
-      }
-    }
-
-    void loadStatus();
-
-    return () => {
-      isCancelled = true;
-    };
-  }, []);
-
   async function sendMessage(content: string) {
     const trimmed = content.trim();
 
-    if (!trimmed || loading || !runtimeConfigured) {
+    if (!trimmed || loading) {
       return;
     }
 
@@ -132,7 +93,7 @@ export default function Chatbox({
           role: "assistant",
           content:
             payload.answer ||
-            "OpenAI returned an empty response. Try a different question.",
+            "The assistant returned an empty response. Try a different question.",
         },
       ]);
     } catch (caughtError) {
@@ -172,7 +133,7 @@ export default function Chatbox({
             key={question}
             type="button"
             onClick={() => sendMessage(question)}
-            disabled={!runtimeConfigured || loading}
+            disabled={loading}
             className="chat-chip px-3 py-1 text-xs font-semibold"
           >
             {question}
@@ -233,11 +194,9 @@ export default function Chatbox({
             }
           }}
           rows={isLauncher ? 2 : isEmbedded ? 2 : 3}
-          disabled={!runtimeConfigured}
+          disabled={loading}
           placeholder={
-            runtimeConfigured
-              ? "Ask about Joshua's projects, stack, experience, or AI integration..."
-              : "Set OPENAI_API_KEY to enable live assistant mode."
+            "Ask about Joshua's projects, stack, experience, or career focus..."
           }
           className="chat-textarea w-full resize-none rounded-2xl px-4 py-3 text-sm outline-none transition"
         />

@@ -17,7 +17,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const displayName = getDisplayName(profile.name);
-  const isConfigured = Boolean(process.env.OPENAI_API_KEY);
 
   return (
     <html lang="en">
@@ -32,10 +31,7 @@ export default function RootLayout({
           <main className="mx-auto w-full max-w-6xl px-6 pb-20 pt-12 md:px-10 md:pt-16">
             {children}
           </main>
-          <FloatingChatLauncher
-            developerName={displayName}
-            isConfigured={isConfigured}
-          />
+          <FloatingChatLauncher developerName={displayName} />
         </div>
       </body>
     </html>

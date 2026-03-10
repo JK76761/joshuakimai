@@ -1,23 +1,22 @@
 # Josh_Kim_Web
 
-A modern developer portfolio for Joshua Kim, showcasing projects, experience, technical skills, and an AI-powered assistant built with Next.js, TypeScript, and Tailwind CSS.
+A modern developer portfolio for Joshua Kim, showcasing projects, experience, technical skills, and an interactive portfolio assistant built with Next.js, TypeScript, and Tailwind CSS.
 
 ## Stack
 
 - Next.js (App Router)
 - TypeScript
 - Tailwind CSS
-- OpenAI API
 - Vercel
 
 ## Features
 
 - Responsive portfolio homepage
 - Projects, experience, and contact pages
-- Floating AI chatbot launcher
-- Dedicated AI assistant page
+- Floating portfolio assistant launcher
+- Dedicated assistant page
 - Portfolio content stored in JSON files
-- OpenAI-powered portfolio Q&A
+- Local portfolio Q&A without API billing
 
 ## Local Development
 
@@ -28,8 +27,5 @@ npm run dev
 
 ## Deployment
 
-Deploy on Vercel and add:
-
-```bash
-OPENAI_API_KEY=your_key_here
-```
+Deploy directly to Vercel. No environment variables are required for the local
+portfolio assistant.

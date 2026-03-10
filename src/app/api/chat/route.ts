@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { buildContext } from "@/lib/embeddings";
-import { createPortfolioAnswer } from "@/lib/openai";
+import { createLocalAssistantAnswer } from "@/lib/local-assistant";
 import type { ChatHistoryMessage } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -46,34 +45,12 @@ export async function POST(request: Request) {
     }
 
     const history = sanitizeHistory(payload.history);
-    const context = buildContext(message);
+    const answer = createLocalAssistantAnswer({
+      question: message,
+      history,
+    });
 
-    if (!process.env.OPENAI_API_KEY) {
-      return NextResponse.json(
-        {
-          error:
-            "OpenAI API is not configured. Add OPENAI_API_KEY to .env.local or your Vercel project settings.",
-        },
-        { status: 503 },
-      );
-    }
-
-    try {
-      const answer = await createPortfolioAnswer({
-        question: message,
-        context,
-        history,
-      });
-
-      return NextResponse.json({ answer, source: "openai" });
-    } catch (caughtError) {
-      const errorMessage =
-        caughtError instanceof Error
-          ? caughtError.message
-          : "OpenAI request failed.";
-
-      return NextResponse.json({ error: errorMessage }, { status: 502 });
-    }
+    return NextResponse.json({ answer, source: "local" });
   } catch {
     return NextResponse.json(
       { error: "Invalid request payload." },
