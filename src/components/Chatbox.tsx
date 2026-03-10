@@ -25,7 +25,7 @@ const suggestedQuestions = [
 ];
 
 function getIntroMessage(developerName: string): string {
-  return `Hi, I'm ${developerName}'s portfolio assistant. Ask about projects, experience, technical strengths, or current career focus.`;
+  return `Hi, I'm ${developerName}'s AI assistant. Ask about projects, experience, technical strengths, or current career focus.`;
 }
 
 export default function Chatbox({

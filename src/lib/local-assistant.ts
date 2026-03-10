@@ -23,12 +23,14 @@ function findProject(question: string): Project | undefined {
 
   return projects.find((project) => {
     const normalizedName = normalize(project.name);
+    const nameTokens = normalizedName
+      .split(" ")
+      .filter((token) => token.length > 3);
+
     return (
       normalizedQuestion.includes(normalizedName) ||
-      normalizedName
-        .split(" ")
-        .filter((token) => token.length > 3)
-        .every((token) => normalizedQuestion.includes(token))
+      (nameTokens.length > 0 &&
+        nameTokens.every((token) => normalizedQuestion.includes(token)))
     );
   });
 }
@@ -67,9 +69,9 @@ function formatExperienceAnswer(item: Experience): string {
 
 function answerAboutAssistant(): string {
   return [
-    "This site uses a local portfolio assistant instead of a paid external model.",
-    "It answers from structured portfolio data stored in JSON files covering projects, experience, education, contact details, and technical skills.",
-    "That keeps it fast, free to run, and reliable on Vercel.",
+    "This site can answer with OpenAI when the API key is configured, with a local portfolio fallback if the live model is unavailable.",
+    "The answers are grounded in structured portfolio data stored in JSON files covering projects, experience, education, contact details, and technical skills.",
+    "That keeps the assistant reliable while staying focused on Joshua Kim's actual work.",
   ].join(" ");
 }
 

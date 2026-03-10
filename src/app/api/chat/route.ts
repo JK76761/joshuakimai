@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import { buildContext } from "@/lib/embeddings";
 import { createLocalAssistantAnswer } from "@/lib/local-assistant";
+import { createPortfolioAnswer } from "@/lib/openai";
 import type { ChatHistoryMessage } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -45,12 +47,30 @@ export async function POST(request: Request) {
     }
 
     const history = sanitizeHistory(payload.history);
-    const answer = createLocalAssistantAnswer({
+    const localAnswer = createLocalAssistantAnswer({
       question: message,
       history,
     });
 
-    return NextResponse.json({ answer, source: "local" });
+    const apiKey = process.env.OPENAI_API_KEY?.trim();
+
+    if (!apiKey) {
+      return NextResponse.json({ answer: localAnswer, source: "local" });
+    }
+
+    try {
+      const context = buildContext(message);
+      const answer = await createPortfolioAnswer({
+        question: message,
+        context,
+        history,
+      });
+
+      return NextResponse.json({ answer, source: "openai" });
+    } catch (caughtError) {
+      console.error("OpenAI chat request failed. Falling back to local answer.", caughtError);
+      return NextResponse.json({ answer: localAnswer, source: "local-fallback" });
+    }
   } catch {
     return NextResponse.json(
       { error: "Invalid request payload." },

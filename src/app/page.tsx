@@ -53,7 +53,7 @@ export default function HomePage() {
             <div className="hero-ai-inline">
               <span className="hero-ai-dot" aria-hidden="true" />
               <p className="hero-ai-copy">
-                Portfolio assistant available from the chat icon for quick questions about
+                AI assistant available from the chat icon for quick questions about
                 projects, experience, and technical stack.
               </p>
             </div>

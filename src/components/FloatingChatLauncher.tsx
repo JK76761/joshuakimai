@@ -37,10 +37,10 @@ function FloatingChatLauncherInner({
         <div id="floating-ai-assistant" className="floating-chat-panel">
           <div className="floating-chat-header">
             <div className="space-y-1">
-              <p className="floating-chat-kicker">Assistant</p>
+              <p className="floating-chat-kicker">AI Assistant</p>
               <p className="floating-chat-title">Ask about {developerName}</p>
               <span className="floating-chat-status" data-state="live">
-                Local Q&A
+                Live AI + fallback
               </span>
             </div>
 

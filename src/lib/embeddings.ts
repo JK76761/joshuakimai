@@ -45,9 +45,9 @@ const knowledgeBase: KnowledgeChunk[] = [
   },
   {
     id: "ai",
-    content: `This portfolio includes a local portfolio assistant. The assistant is grounded in locally stored portfolio data and answers questions about ${getDisplayName(
+    content: `This portfolio includes an AI assistant. The assistant uses portfolio context about ${getDisplayName(
       profile.name,
-    )}'s projects, experience, education, availability, and tech stack.`,
+    )}'s projects, experience, education, availability, and tech stack, with local fallback data available if live AI is unavailable.`,
   },
   ...projects.map((project) => ({
     id: `project:${project.id}`,
@@ -121,7 +121,7 @@ export function buildContext(question: string, topK = 4): string {
   if (!ranked.length) {
     return [
       `${profile.name} is a ${profile.headline}.`,
-      "The site includes a local portfolio assistant grounded in structured portfolio data.",
+      "The site includes an AI assistant grounded in structured portfolio data.",
       `Projects include: ${projects.map((project) => project.name).join(", ")}.`,
       `Experience includes ${experience
         .map((item) => `${item.role} at ${item.company}`)

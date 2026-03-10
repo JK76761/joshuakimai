@@ -12,15 +12,15 @@ export default function AIAssistantPage() {
         <Link href="/" className="link-inline text-sm font-semibold">
           Back to home
         </Link>
-        <p className="section-kicker">Assistant</p>
-        <h1 className="section-title">Portfolio Assistant</h1>
+        <p className="section-kicker">AI Assistant</p>
+        <h1 className="section-title">AI Assistant</h1>
         <p className="section-copy">
           Ask about {displayName}&apos;s projects, experience, technical strengths,
-          and career focus. This assistant runs from structured local portfolio data, so
-          it works on Vercel without API billing or extra setup.
+          and career focus. This assistant uses OpenAI when configured and falls back to
+          structured portfolio data if live AI is unavailable.
         </p>
         <p className="status-note" data-state="live">
-          Local portfolio Q&amp;A is active
+          OpenAI ready with local fallback
         </p>
       </header>
 
