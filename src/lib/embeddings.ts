@@ -49,6 +49,10 @@ const knowledgeBase: KnowledgeChunk[] = [
       profile.name,
     )}'s projects, experience, education, availability, and tech stack to answer questions with OpenAI.`,
   },
+  {
+    id: "contact",
+    content: `Public contact methods for ${getDisplayName(profile.name)}: email ${profile.email}, LinkedIn ${profile.socials.linkedin}, GitHub ${profile.socials.github}, location ${profile.location}. Phone number is not public on this site.`,
+  },
   ...projects.map((project) => ({
     id: `project:${project.id}`,
     content: `${project.name} (${project.year}) summary: ${project.summary}. Details: ${project.description}. Stack: ${project.stack.join(

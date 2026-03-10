@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { buildContext } from "@/lib/embeddings";
+import { profile } from "@/lib/data";
 import { createPortfolioAnswer, OpenAIRequestError } from "@/lib/openai";
 import type { ChatHistoryMessage } from "@/lib/types";
 
@@ -19,6 +20,10 @@ function getGuardedAnswer(message: string): string | null {
 
   if (/\b(phone|number|mobile|cell|call)\b/.test(normalizedMessage)) {
     return "Joshua's phone number is not public on this site. Please use the public email or LinkedIn contact instead.";
+  }
+
+  if (/\b(contact|email|linkedin|reach)\b/.test(normalizedMessage)) {
+    return `You can contact Joshua Kim via email at ${profile.email} or through LinkedIn at ${profile.socials.linkedin}.`;
   }
 
   return null;
