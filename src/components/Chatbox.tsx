@@ -267,7 +267,7 @@ export default function Chatbox({
       data-chat-mode={mode}
       className={`chat-shell ${
         isOverlay
-          ? "p-0"
+          ? "min-h-0 p-0"
           : isLauncher
             ? "p-3 sm:p-4"
             : isEmbedded || isHero
@@ -278,7 +278,7 @@ export default function Chatbox({
       <div
         className={`chat-thread overflow-y-auto rounded-2xl p-4 ${
           isOverlay
-            ? "h-full min-h-0 sm:p-5"
+            ? "min-h-0 flex-1 sm:p-5"
             : isLauncher
             ? "h-[220px] sm:h-[300px]"
             : isHero

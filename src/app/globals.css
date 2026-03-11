@@ -1848,9 +1848,10 @@ a {
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  min-height: 0;
 }
 
 .chat-shell[data-chat-mode="overlay"] .chat-thread {
@@ -1858,7 +1859,7 @@ a {
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  height: 100% !important;
+  flex: 1 1 auto;
   min-height: 0;
   padding: 0.2rem 0.05rem 0.25rem;
 }
@@ -1956,6 +1957,10 @@ a {
   display: grid;
   gap: 0;
   margin-top: 0.2rem;
+}
+
+.chat-shell[data-chat-mode="overlay"] .chat-compose {
+  margin-top: auto;
 }
 
 .chat-compose-bar {
