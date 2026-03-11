@@ -278,7 +278,7 @@ export default function Chatbox({
       <div
         className={`chat-thread overflow-y-auto rounded-2xl p-4 ${
           isOverlay
-            ? "h-[min(44svh,30rem)] sm:h-[min(48svh,34rem)] sm:p-5"
+            ? "h-full min-h-0 sm:p-5"
             : isLauncher
             ? "h-[220px] sm:h-[300px]"
             : isHero
