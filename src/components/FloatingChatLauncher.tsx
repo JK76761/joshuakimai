@@ -214,9 +214,26 @@ function FloatingChatLauncherInner({
                 <div className="floating-chat-main-head">
                   <div className="floating-chat-mobile-actions">
                     <span className="floating-chat-mobile-title">AI Assistant</span>
-                    <Link href="/ai" className="floating-chat-mobile-link">
-                      Full page
-                    </Link>
+                    <div className="floating-chat-mobile-actions-end">
+                      <Link href="/ai" className="floating-chat-mobile-link">
+                        Full page
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => setIsOpen(false)}
+                        className="floating-chat-mobile-close"
+                        aria-label="Close assistant"
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path
+                            d="M7 7l10 10M17 7 7 17"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeWidth="1.75"
+                          />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                   <p className="floating-chat-main-label">Start with a question</p>
                   <p className="floating-chat-main-copy">
