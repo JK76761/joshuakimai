@@ -212,6 +212,12 @@ function FloatingChatLauncherInner({
 
               <div className="floating-chat-main">
                 <div className="floating-chat-main-head">
+                  <div className="floating-chat-mobile-actions">
+                    <span className="floating-chat-mobile-title">AI Assistant</span>
+                    <Link href="/ai" className="floating-chat-mobile-link">
+                      Full page
+                    </Link>
+                  </div>
                   <p className="floating-chat-main-label">Start with a question</p>
                   <p className="floating-chat-main-copy">
                     Ask directly, or use one of the guided prompts below.
