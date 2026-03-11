@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import BackgroundAura from "@/components/BackgroundAura";
+import DragonBackdrop from "@/components/DragonBackdrop";
 import FloatingChatLauncher from "@/components/FloatingChatLauncher";
 import { profile } from "@/lib/data";
 import { getDisplayName } from "@/lib/format";
@@ -26,6 +27,7 @@ export default function RootLayout({
         <div className="site-grid" aria-hidden="true" />
         <div className="site-noise" aria-hidden="true" />
         <BackgroundAura />
+        <DragonBackdrop />
 
         <div className="relative min-h-screen pb-8">
           <main className="mx-auto w-full max-w-6xl px-6 pb-20 pt-12 md:px-10 md:pt-16">

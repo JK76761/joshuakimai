@@ -56,7 +56,8 @@ a {
 .site-aurora,
 .site-grid,
 .site-noise,
-.pointer-aura {
+.pointer-aura,
+.site-dragon {
   pointer-events: none;
   position: fixed;
   inset: 0;
@@ -115,6 +116,69 @@ a {
       transparent 52%
     );
   transition: opacity 180ms ease;
+}
+
+.site-dragon {
+  z-index: -3;
+  overflow: hidden;
+}
+
+.site-dragon-shell {
+  position: absolute;
+  right: max(-3rem, calc(50vw - 38rem));
+  top: 5rem;
+  width: min(44rem, 46vw);
+  opacity: 0.34;
+  transform-origin: 62% 40%;
+  animation: dragon-drift 28s ease-in-out infinite;
+  filter: drop-shadow(0 28px 72px rgba(24, 26, 29, 0.06));
+}
+
+.site-dragon-svg {
+  display: block;
+  height: auto;
+  overflow: visible;
+  width: 100%;
+}
+
+.site-dragon-body {
+  opacity: 0.82;
+}
+
+.site-dragon-line,
+.site-dragon-detail,
+.site-dragon-whisker,
+.site-dragon-flare {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.site-dragon-line {
+  stroke: url(#dragonStroke);
+  stroke-dasharray: 20 18;
+  stroke-width: 7.5;
+  animation: dragon-line-flow 18s linear infinite;
+}
+
+.site-dragon-detail {
+  stroke: rgba(109, 115, 124, 0.56);
+  stroke-width: 5;
+}
+
+.site-dragon-whisker {
+  stroke: rgba(143, 148, 156, 0.58);
+  stroke-width: 3.5;
+  animation: dragon-whisker-wave 7s ease-in-out infinite;
+}
+
+.site-dragon-flare {
+  stroke: rgba(187, 191, 198, 0.48);
+  stroke-width: 3;
+}
+
+.site-dragon-eye {
+  fill: rgba(24, 26, 29, 0.78);
 }
 
 .nav-link {
@@ -1966,6 +2030,45 @@ a {
   }
 }
 
+@keyframes dragon-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(-1deg);
+  }
+  25% {
+    transform: translate3d(-1.2rem, 0.9rem, 0) scale(1.015) rotate(0.4deg);
+  }
+  50% {
+    transform: translate3d(1rem, 1.6rem, 0) scale(0.992) rotate(1.1deg);
+  }
+  75% {
+    transform: translate3d(1.8rem, -0.4rem, 0) scale(1.02) rotate(-0.2deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(-1deg);
+  }
+}
+
+@keyframes dragon-line-flow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -152;
+  }
+}
+
+@keyframes dragon-whisker-wave {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: translateX(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(0.35rem);
+  }
+}
+
 @keyframes marquee {
   from {
     transform: translateX(0);
@@ -2206,6 +2309,12 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .site-dragon-shell,
+  .site-dragon-line,
+  .site-dragon-whisker {
+    animation: none !important;
+  }
+
   *,
   *::before,
   *::after {
@@ -2469,6 +2578,10 @@ a {
 }
 
 @media (max-width: 1023px) {
+  .site-dragon {
+    display: none;
+  }
+
   .floating-chat-layout {
     grid-template-columns: 1fr;
   }
