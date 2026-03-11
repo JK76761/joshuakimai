@@ -1420,15 +1420,14 @@ a {
   border: 1px solid rgba(24, 26, 29, 0.08);
   border-radius: 1.6rem;
   display: grid;
-  gap: 1rem;
-  grid-template-rows: auto 1fr;
+  gap: 0.45rem;
+  grid-template-rows: auto minmax(0, 1fr);
   min-height: 0;
-  padding: 1.35rem;
+  padding: 0.95rem 1rem 0.9rem;
 }
 
 .floating-chat-main-head {
-  display: grid;
-  gap: 0.3rem;
+  display: contents;
 }
 
 .floating-chat-mobile-actions {
@@ -1850,8 +1849,28 @@ a {
   border-radius: 0;
   box-shadow: none;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: minmax(0, 1fr) auto;
   height: 100%;
+}
+
+.chat-shell[data-chat-mode="overlay"] .chat-thread {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  height: 100% !important;
+  min-height: 0;
+  padding: 0.2rem 0.05rem 0.25rem;
+}
+
+.chat-shell[data-chat-mode="overlay"] .chat-compose-bar {
+  border-radius: 1rem;
+  padding: 0.42rem 0.46rem 0.42rem 0.68rem;
+}
+
+.chat-shell[data-chat-mode="overlay"] .chat-send-button {
+  min-height: 1.95rem;
+  min-width: 1.95rem;
 }
 
 .chat-thread {
@@ -1936,7 +1955,7 @@ a {
 .chat-compose {
   display: grid;
   gap: 0;
-  margin-top: 0.55rem;
+  margin-top: 0.2rem;
 }
 
 .chat-compose-bar {
@@ -1946,7 +1965,7 @@ a {
   border-radius: 1.25rem;
   display: flex;
   gap: 0.65rem;
-  padding: 0.7rem 0.72rem 0.7rem 0.9rem;
+  padding: 0.55rem 0.58rem 0.55rem 0.8rem;
   transition:
     border-color 180ms ease,
     box-shadow 180ms ease,
@@ -2556,13 +2575,15 @@ a {
     display: none;
   }
 
-  .chat-shell[data-chat-mode="overlay"] .chat-thread {
-    height: 100% !important;
-    min-height: 0;
-    background: rgba(255, 255, 255, 0.52);
-    border-radius: 1rem;
-    padding: 0.8rem;
-  }
+.chat-shell[data-chat-mode="overlay"] .chat-thread {
+  height: 100% !important;
+  min-height: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0.2rem 0.05rem 0.25rem;
+}
 
   .chat-shell[data-chat-mode="overlay"] .chat-message {
     max-width: 100%;
@@ -2585,10 +2606,10 @@ a {
     min-height: 2.15rem;
   }
 
-  .chat-shell[data-chat-mode="overlay"] .chat-compose-bar {
-    border-radius: 1.1rem;
-    padding: 0.62rem 0.65rem 0.62rem 0.8rem;
-  }
+.chat-shell[data-chat-mode="overlay"] .chat-compose-bar {
+  border-radius: 1rem;
+  padding: 0.46rem 0.5rem 0.46rem 0.72rem;
+}
 
   .chat-shell[data-chat-mode="overlay"] .chat-send-button {
     min-height: 2.1rem;
