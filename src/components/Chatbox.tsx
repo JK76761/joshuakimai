@@ -354,23 +354,6 @@ export default function Chatbox({
             placeholder="Ask about Joshua's projects, stack, experience, or career focus..."
             className="chat-textarea w-full resize-none rounded-2xl px-3.5 py-1.5 text-sm outline-none transition"
           />
-
-          <div
-            className={`chat-compose-actions ${
-              isLauncher || isHero ? "justify-end" : "items-center justify-between"
-            } ${isOverlay ? "flex-col items-stretch sm:flex-row sm:items-center" : ""}`}
-          >
-            {!isLauncher && !isHero ? (
-              <p className="chat-helper-text">Shift + Enter for a new line.</p>
-            ) : null}
-            <button
-              type="submit"
-              disabled={!canSubmit}
-              className="chat-send-button"
-            >
-              Send
-            </button>
-          </div>
         </form>
       )}
     </section>
