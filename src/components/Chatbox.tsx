@@ -92,8 +92,8 @@ export default function Chatbox({
       return;
     }
 
-    const minHeight = isOverlay ? 50 : isLauncher || isHero ? 44 : 46;
-    const maxHeight = isOverlay ? 112 : isLauncher || isHero ? 92 : 124;
+    const minHeight = isOverlay ? 42 : isLauncher || isHero ? 40 : 40;
+    const maxHeight = isOverlay ? 96 : isLauncher || isHero ? 84 : 104;
 
     textarea.style.height = "0px";
     const nextHeight = Math.min(Math.max(textarea.scrollHeight, minHeight), maxHeight);
@@ -352,7 +352,7 @@ export default function Chatbox({
             rows={1}
             disabled={loading || isChatDisabled}
             placeholder="Ask about Joshua's projects, stack, experience, or career focus..."
-            className="chat-textarea w-full resize-none rounded-2xl px-4 py-2 text-sm outline-none transition"
+            className="chat-textarea w-full resize-none rounded-2xl px-3.5 py-1.5 text-sm outline-none transition"
           />
 
           <div

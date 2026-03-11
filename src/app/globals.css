@@ -1920,8 +1920,8 @@ a {
   background: rgba(255, 255, 255, 0.72);
   border: 1px solid rgba(24, 26, 29, 0.1);
   color: var(--text-primary);
-  line-height: 1.55;
-  min-height: 3rem;
+  line-height: 1.45;
+  min-height: 2.5rem;
 }
 
 .chat-textarea::placeholder {
@@ -1935,8 +1935,8 @@ a {
 
 .chat-compose {
   display: grid;
-  gap: 0.6rem;
-  margin-top: 0.85rem;
+  gap: 0.45rem;
+  margin-top: 0.7rem;
 }
 
 .chat-compose-actions {
@@ -1980,9 +1980,9 @@ a {
   font-size: 0.86rem;
   font-weight: 700;
   justify-content: center;
-  min-height: 2.85rem;
-  min-width: 6.5rem;
-  padding: 0.65rem 1.2rem;
+  min-height: 2.5rem;
+  min-width: 5.8rem;
+  padding: 0.5rem 1rem;
   transition:
     border-color 180ms ease,
     background-color 180ms ease,
@@ -2563,7 +2563,7 @@ a {
 
   .chat-shell[data-chat-mode="overlay"] .chat-textarea {
     font-size: 16px;
-    min-height: 3.15rem;
+    min-height: 2.7rem;
   }
 
   .chat-shell[data-chat-mode="overlay"] .chat-compose-actions {
@@ -2574,6 +2574,7 @@ a {
 
   .chat-shell[data-chat-mode="overlay"] .chat-send-button {
     min-width: 4.6rem;
+    min-height: 2.35rem;
     width: auto;
   }
 
