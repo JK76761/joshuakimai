@@ -23,6 +23,10 @@ function getGuardedAnswer(message: string): string | null {
     return "Hao Jiao is Joshua's girlfriend.";
   }
 
+  if (/\b(relocate|relocation|move)\b/.test(normalizedMessage) && /\b(city|cities|location|locations)\b/.test(normalizedMessage)) {
+    return "Joshua is happy to relocate to other cities for the right opportunity.";
+  }
+
   if (/\b(phone|number|mobile|cell|call)\b/.test(normalizedMessage)) {
     return "Joshua's phone number is not public on this site. Please use the public email or LinkedIn contact instead.";
   }

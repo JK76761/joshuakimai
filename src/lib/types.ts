@@ -11,6 +11,7 @@ export type Profile = {
   tagline: string;
   bio: string;
   location: string;
+  relocationPreference?: string;
   email: string;
   phone?: string;
   availability: string;

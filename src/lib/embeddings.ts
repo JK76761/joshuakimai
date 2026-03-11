@@ -41,7 +41,7 @@ const knowledgeBase: KnowledgeChunk[] = [
     id: "profile",
     content: `${profile.name} is a ${profile.headline}. ${profile.bio} Availability: ${profile.availability}. Target roles: ${profile.targetRoles.join(
       ", ",
-    )}. Focus areas: ${profile.focusAreas.join(" ")} Skills: ${profile.skills.join(", ")}.`,
+    )}. Relocation: ${profile.relocationPreference || "Not specified"}. Focus areas: ${profile.focusAreas.join(" ")} Skills: ${profile.skills.join(", ")}.`,
   },
   {
     id: "ai",
