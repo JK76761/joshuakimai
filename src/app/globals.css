@@ -1005,13 +1005,13 @@ a {
   box-shadow: none;
   display: grid;
   gap: 1.3rem;
-  height: min(52rem, calc(100svh - 2.2rem));
-  inset: 1.1rem;
+  height: min(48rem, calc(100svh - 4rem));
+  inset: 1.7rem;
   margin: auto;
-  max-height: min(52rem, calc(100svh - 2.2rem));
-  max-width: min(76rem, calc(100vw - 2.2rem));
+  max-height: min(48rem, calc(100svh - 4rem));
+  max-width: min(72rem, calc(100vw - 4rem));
   overflow: hidden;
-  padding: 1.1rem;
+  padding: 1rem;
   position: absolute;
   scrollbar-width: none;
 }
