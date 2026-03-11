@@ -76,7 +76,7 @@ function getIntroMessage(
   }
 
   if (mode === "overlay") {
-    return `Hi, I'm ${developerName}'s AI assistant. Ask about projects, experience, stack, or career direction.`;
+    return `Ask me about ${developerName}'s projects, experience, stack, and current career focus.`;
   }
 
   return `Hi, I'm ${developerName}'s AI assistant. Ask about projects, experience, technical strengths, or current career focus.`;
