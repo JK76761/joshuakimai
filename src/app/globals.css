@@ -1439,8 +1439,8 @@ a {
 
 .floating-chat-close-overlay {
   position: absolute;
-  right: 1.32rem;
-  top: 1.22rem;
+  right: 1.62rem;
+  top: 1.48rem;
   z-index: 3;
 }
 
