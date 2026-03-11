@@ -19,6 +19,10 @@ type ChatRequest = {
 function getGuardedAnswer(message: string): string | null {
   const normalizedMessage = message.toLowerCase();
 
+  if (/\bhao\s*jiao\b/.test(normalizedMessage)) {
+    return "Hao Jiao is Joshua's girlfriend.";
+  }
+
   if (/\b(phone|number|mobile|cell|call)\b/.test(normalizedMessage)) {
     return "Joshua's phone number is not public on this site. Please use the public email or LinkedIn contact instead.";
   }
