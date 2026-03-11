@@ -334,26 +334,45 @@ export default function Chatbox({
         <div className="chat-disabled-card">{disabledCardMessage}</div>
       ) : (
         <form onSubmit={handleSubmit} className="chat-compose">
-          <textarea
-            ref={textareaRef}
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" && !event.shiftKey) {
-                event.preventDefault();
+          <div className="chat-compose-bar">
+            <textarea
+              ref={textareaRef}
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && !event.shiftKey) {
+                  event.preventDefault();
 
-                if (canSubmit) {
-                  void sendMessage(input);
+                  if (canSubmit) {
+                    void sendMessage(input);
+                  }
                 }
-              }
-            }}
-            rows={1}
-            disabled={loading || isChatDisabled}
-            placeholder="Ask about Joshua's projects, stack, experience, or career focus..."
-            className="chat-textarea w-full resize-none rounded-2xl px-3.5 py-1.5 text-sm outline-none transition"
-          />
+              }}
+              rows={1}
+              disabled={loading || isChatDisabled}
+              placeholder="Ask about Joshua's projects, stack, experience, or career focus..."
+              className="chat-textarea w-full resize-none text-sm outline-none transition"
+            />
+
+            <button
+              type="submit"
+              disabled={!canSubmit}
+              className="chat-send-button"
+              aria-label="Send message"
+            >
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path
+                  d="M4.25 10H15.75M15.75 10L10.75 5M15.75 10L10.75 15"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.8"
+                />
+              </svg>
+            </button>
+          </div>
         </form>
       )}
     </section>
