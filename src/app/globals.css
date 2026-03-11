@@ -1699,6 +1699,10 @@ a {
   justify-content: flex-end;
 }
 
+.chat-message-row[data-role="user"] .chat-message {
+  margin-left: auto;
+}
+
 .josh-assistant-avatar {
   align-items: center;
   background: rgba(255, 255, 255, 0.82);
@@ -1738,7 +1742,6 @@ a {
   background: linear-gradient(135deg, rgba(218, 220, 225, 0.62), rgba(239, 240, 243, 0.7));
   border: 1px solid rgba(24, 26, 29, 0.06);
   color: var(--text-strong);
-  margin-left: auto;
 }
 
 .chat-textarea {

@@ -175,7 +175,7 @@ function FloatingChatLauncherInner({
 
                   <div className="floating-chat-aside-copy">
                     <h2 id="floating-ai-title" className="floating-chat-hero-title">
-                      Ask Joshua Kim&apos;s Josh Assistant first.
+                      Start with Josh Assistant.
                     </h2>
                     <p className="floating-chat-hero-copy">
                       Explore projects, experience, technical stack, and career
