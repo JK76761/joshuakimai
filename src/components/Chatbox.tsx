@@ -61,6 +61,7 @@ export default function Chatbox({
   const [replyPreview, setReplyPreview] = useState<string | null>(null);
   const [replyTick, setReplyTick] = useState(0);
   const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const isEmbedded = mode === "embedded";
   const isHero = mode === "hero";
   const isLauncher = mode === "launcher";
@@ -83,6 +84,22 @@ export default function Chatbox({
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+
+    if (!textarea) {
+      return;
+    }
+
+    const minHeight = isOverlay ? 50 : isLauncher || isHero ? 44 : 46;
+    const maxHeight = isOverlay ? 112 : isLauncher || isHero ? 92 : 124;
+
+    textarea.style.height = "0px";
+    const nextHeight = Math.min(Math.max(textarea.scrollHeight, minHeight), maxHeight);
+    textarea.style.height = `${nextHeight}px`;
+    textarea.style.overflowY = textarea.scrollHeight > maxHeight ? "auto" : "hidden";
+  }, [input, isHero, isLauncher, isOverlay]);
 
   useEffect(() => {
     if (loading) {
@@ -318,6 +335,7 @@ export default function Chatbox({
       ) : (
         <form onSubmit={handleSubmit} className="chat-compose">
           <textarea
+            ref={textareaRef}
             value={input}
             onChange={(event) => setInput(event.target.value)}
             onFocus={() => setIsFocused(true)}
@@ -331,10 +349,10 @@ export default function Chatbox({
                 }
               }
             }}
-            rows={isLauncher || isHero ? 2 : isEmbedded ? 2 : isOverlay ? 2 : 2}
+            rows={1}
             disabled={loading || isChatDisabled}
             placeholder="Ask about Joshua's projects, stack, experience, or career focus..."
-            className="chat-textarea w-full resize-none rounded-2xl px-4 py-2.5 text-sm outline-none transition"
+            className="chat-textarea w-full resize-none rounded-2xl px-4 py-2 text-sm outline-none transition"
           />
 
           <div

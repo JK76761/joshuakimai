@@ -1921,6 +1921,7 @@ a {
   border: 1px solid rgba(24, 26, 29, 0.1);
   color: var(--text-primary);
   line-height: 1.55;
+  min-height: 3rem;
 }
 
 .chat-textarea::placeholder {
@@ -2562,7 +2563,7 @@ a {
 
   .chat-shell[data-chat-mode="overlay"] .chat-textarea {
     font-size: 16px;
-    min-height: 4.3rem;
+    min-height: 3.15rem;
   }
 
   .chat-shell[data-chat-mode="overlay"] .chat-compose-actions {
