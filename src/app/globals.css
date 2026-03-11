@@ -125,10 +125,10 @@ a {
 
 .site-dragon-shell {
   position: absolute;
-  right: max(-3rem, calc(50vw - 38rem));
-  top: 5rem;
-  width: min(44rem, 46vw);
-  opacity: 0.34;
+  right: max(-2rem, calc(50vw - 36rem));
+  top: 4.25rem;
+  width: min(41rem, 43vw);
+  opacity: 0.4;
   transform-origin: 62% 40%;
   animation: dragon-drift 28s ease-in-out infinite;
   filter: drop-shadow(0 28px 72px rgba(24, 26, 29, 0.06));
@@ -141,29 +141,52 @@ a {
   width: 100%;
 }
 
-.site-dragon-body {
-  opacity: 0.82;
+.site-dragon-frame {
+  transform-origin: 56% 38%;
 }
 
-.site-dragon-line,
-.site-dragon-detail,
+.site-dragon-wing,
+.site-dragon-outline,
+.site-dragon-tail,
 .site-dragon-whisker,
-.site-dragon-flare {
+.site-dragon-horn {
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-.site-dragon-line {
-  stroke: url(#dragonStroke);
-  stroke-dasharray: 20 18;
-  stroke-width: 7.5;
-  animation: dragon-line-flow 18s linear infinite;
+.site-dragon-wing {
+  fill: url(#dragonWingGradient);
+  stroke: rgba(124, 130, 140, 0.34);
+  stroke-width: 2.2;
 }
 
-.site-dragon-detail {
-  stroke: rgba(109, 115, 124, 0.56);
-  stroke-width: 5;
+.site-dragon-wing-back {
+  transform-box: fill-box;
+  transform-origin: 92% 80%;
+  animation: dragon-wing-back-flap 8.4s ease-in-out infinite;
+}
+
+.site-dragon-wing-front {
+  transform-box: fill-box;
+  transform-origin: 8% 82%;
+  animation: dragon-wing-front-flap 6.8s ease-in-out infinite;
+}
+
+.site-dragon-body-solid {
+  fill: url(#dragonBodyGradient);
+  opacity: 0.94;
+}
+
+.site-dragon-outline {
+  stroke: url(#dragonOutlineGradient);
+  stroke-width: 6.2;
+}
+
+.site-dragon-tail {
+  stroke: rgba(132, 138, 147, 0.58);
+  stroke-width: 4.8;
+  animation: dragon-tail-wave 8.6s ease-in-out infinite;
 }
 
 .site-dragon-whisker {
@@ -172,9 +195,9 @@ a {
   animation: dragon-whisker-wave 7s ease-in-out infinite;
 }
 
-.site-dragon-flare {
-  stroke: rgba(187, 191, 198, 0.48);
-  stroke-width: 3;
+.site-dragon-horn {
+  stroke: rgba(109, 115, 124, 0.6);
+  stroke-width: 4;
 }
 
 .site-dragon-eye {
@@ -2048,12 +2071,33 @@ a {
   }
 }
 
-@keyframes dragon-line-flow {
-  from {
-    stroke-dashoffset: 0;
+@keyframes dragon-wing-back-flap {
+  0%,
+  100% {
+    transform: rotate(-4deg) translateY(0);
   }
-  to {
-    stroke-dashoffset: -152;
+  50% {
+    transform: rotate(6deg) translateY(-0.35rem);
+  }
+}
+
+@keyframes dragon-wing-front-flap {
+  0%,
+  100% {
+    transform: rotate(6deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-5deg) translateY(-0.42rem);
+  }
+}
+
+@keyframes dragon-tail-wave {
+  0%,
+  100% {
+    transform: translateX(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateX(0.28rem) rotate(4deg);
   }
 }
 
@@ -2310,7 +2354,9 @@ a {
 
 @media (prefers-reduced-motion: reduce) {
   .site-dragon-shell,
-  .site-dragon-line,
+  .site-dragon-wing-back,
+  .site-dragon-wing-front,
+  .site-dragon-tail,
   .site-dragon-whisker {
     animation: none !important;
   }
