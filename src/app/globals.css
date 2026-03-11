@@ -2292,8 +2292,12 @@ a {
     min-width: 0;
   }
 
+  .chat-shell[data-chat-mode="overlay"] {
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
   .chat-shell[data-chat-mode="overlay"] > .space-y-2 {
-    margin-bottom: 0.55rem;
+    display: none;
   }
 
   .chat-shell[data-chat-mode="overlay"] .chat-thread {
