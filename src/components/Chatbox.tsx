@@ -331,10 +331,10 @@ export default function Chatbox({
                 }
               }
             }}
-            rows={isLauncher || isHero ? 2 : isEmbedded ? 2 : isOverlay ? 3 : 3}
+            rows={isLauncher || isHero ? 2 : isEmbedded ? 2 : isOverlay ? 2 : 2}
             disabled={loading || isChatDisabled}
             placeholder="Ask about Joshua's projects, stack, experience, or career focus..."
-            className="chat-textarea w-full resize-none rounded-2xl px-4 py-3 text-sm outline-none transition"
+            className="chat-textarea w-full resize-none rounded-2xl px-4 py-2.5 text-sm outline-none transition"
           />
 
           <div
