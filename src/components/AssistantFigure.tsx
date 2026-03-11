@@ -2,18 +2,21 @@ type AssistantFigureProps = {
   active?: boolean;
   caption?: string;
   compact?: boolean;
+  phase?: "idle" | "typing" | "thinking" | "replying";
 };
 
 export default function AssistantFigure({
   active = false,
   caption = "Ask me about Joshua",
   compact = false,
+  phase = "idle",
 }: AssistantFigureProps) {
   return (
     <div
       className="assistant-presence"
       data-active={active}
       data-compact={compact}
+      data-phase={phase}
       aria-hidden="true"
     >
       <div className="assistant-presence-bubble">

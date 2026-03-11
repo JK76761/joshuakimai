@@ -1335,6 +1335,53 @@ a {
   animation: pulse-ai 1.4s ease-in-out infinite;
 }
 
+.assistant-presence[data-phase="typing"] .assistant-presence-bubble {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.assistant-presence[data-phase="typing"] .assistant-character-figure {
+  animation-duration: 1.9s;
+}
+
+.assistant-presence[data-phase="typing"] .assistant-character-laptop {
+  transform: translateY(-2px) rotate(-1deg);
+}
+
+.assistant-presence[data-phase="thinking"] .assistant-presence-bubble-dot {
+  animation-duration: 0.95s;
+}
+
+.assistant-presence[data-phase="thinking"] .assistant-character-figure {
+  animation-duration: 1.5s;
+}
+
+.assistant-presence[data-phase="thinking"] .assistant-character-badge-left,
+.assistant-presence[data-phase="thinking"] .assistant-character-badge-top,
+.assistant-presence[data-phase="thinking"] .assistant-character-badge-right,
+.assistant-presence[data-phase="thinking"] .assistant-character-badge-small {
+  animation-duration: 1.2s;
+}
+
+.assistant-presence[data-phase="thinking"] .assistant-character-screen {
+  filter: drop-shadow(0 0 18px rgba(90, 163, 255, 0.28));
+}
+
+.assistant-presence[data-phase="replying"] .assistant-presence-bubble {
+  transform: translateY(-2px);
+  animation-duration: 2.2s;
+}
+
+.assistant-presence[data-phase="replying"] .assistant-character-figure {
+  animation-duration: 2s;
+}
+
+.assistant-presence[data-phase="replying"] .assistant-character-badge-left,
+.assistant-presence[data-phase="replying"] .assistant-character-badge-top,
+.assistant-presence[data-phase="replying"] .assistant-character-badge-right,
+.assistant-presence[data-phase="replying"] .assistant-character-badge-small {
+  animation-duration: 1.6s;
+}
+
 .assistant-character-shadow {
   fill: rgba(24, 26, 29, 0.08);
 }
@@ -1393,6 +1440,10 @@ a {
 
 .assistant-presence[data-active="true"] .assistant-character-screen {
   filter: drop-shadow(0 0 14px rgba(90, 163, 255, 0.22));
+}
+
+.assistant-presence[data-phase="replying"] .assistant-character-eye {
+  animation-duration: 3.6s;
 }
 
 .chat-shell {

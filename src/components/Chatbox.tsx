@@ -10,7 +10,10 @@ type Message = {
 type ChatboxProps = {
   developerName: string;
   mode?: "full" | "embedded" | "launcher" | "hero" | "overlay";
-  onActivityChange?: (active: boolean) => void;
+  onPresenceChange?: (state: {
+    phase: "idle" | "typing" | "thinking" | "replying";
+    preview?: string;
+  }) => void;
 };
 
 type ChatPayload = {
@@ -82,7 +85,7 @@ function getIntroMessage(
 export default function Chatbox({
   developerName,
   mode = "full",
-  onActivityChange,
+  onPresenceChange,
 }: ChatboxProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -118,8 +121,31 @@ export default function Chatbox({
   }, [messages, loading]);
 
   useEffect(() => {
-    onActivityChange?.(loading);
-  }, [loading, onActivityChange]);
+    if (loading) {
+      onPresenceChange?.({
+        phase: "thinking",
+        preview: "Thinking...",
+      });
+      return;
+    }
+
+    if (input.trim().length > 0) {
+      onPresenceChange?.({
+        phase: "typing",
+        preview: input.trim().slice(0, 42),
+      });
+      return;
+    }
+
+    const latestAssistant = [...messages]
+      .reverse()
+      .find((message) => message.role === "assistant");
+
+    onPresenceChange?.({
+      phase: latestAssistant ? "replying" : "idle",
+      preview: latestAssistant?.content.slice(0, 42),
+    });
+  }, [input, loading, messages, onPresenceChange]);
 
   useEffect(() => {
     let active = true;

@@ -35,7 +35,12 @@ function FloatingChatLauncherInner({
   developerName,
 }: FloatingChatLauncherProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [companionActive, setCompanionActive] = useState(false);
+  const [presence, setPresence] = useState<{
+    phase: "idle" | "typing" | "thinking" | "replying";
+    preview?: string;
+  }>({
+    phase: "idle",
+  });
   const [assistantState, setAssistantState] = useState<
     "checking" | "ready" | "disabled"
   >("checking");
@@ -113,10 +118,14 @@ function FloatingChatLauncherInner({
     assistantState === "checking"
       ? "Checking OpenAI..."
       : assistantState === "disabled"
-      ? "OpenAI setup needed"
-      : companionActive
-        ? "Thinking..."
-        : "Ask me about Joshua";
+        ? "OpenAI setup needed"
+        : presence.phase === "thinking"
+          ? "Thinking..."
+          : presence.phase === "typing"
+            ? presence.preview || "Keep typing..."
+            : presence.phase === "replying"
+              ? "I have a reply for you"
+              : "Ask me about Joshua";
 
   return (
     <div className="floating-chat-shell">
@@ -156,8 +165,9 @@ function FloatingChatLauncherInner({
               <aside className="floating-chat-aside">
                 <p className="floating-chat-kicker">AI Assistant</p>
                 <AssistantFigure
-                  active={companionActive}
+                  active={presence.phase !== "idle"}
                   caption={companionCaption}
+                  phase={presence.phase}
                 />
 
                 <div className="space-y-4">
@@ -206,7 +216,7 @@ function FloatingChatLauncherInner({
                 <Chatbox
                   developerName={developerName}
                   mode="overlay"
-                  onActivityChange={setCompanionActive}
+                  onPresenceChange={setPresence}
                 />
               </div>
             </div>
