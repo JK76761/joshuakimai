@@ -165,7 +165,7 @@ function FloatingChatLauncherInner({
 
             <div className="floating-chat-layout">
               <aside className="floating-chat-aside">
-                <p className="floating-chat-kicker">AI Assistant</p>
+                <p className="floating-chat-kicker">Josh Assistant</p>
                 <div className="floating-chat-aside-hero">
                   <AssistantFigure
                     active={presence.phase !== "idle"}
@@ -175,7 +175,7 @@ function FloatingChatLauncherInner({
 
                   <div className="floating-chat-aside-copy">
                     <h2 id="floating-ai-title" className="floating-chat-hero-title">
-                      Ask Joshua Kim&apos;s AI assistant first.
+                      Ask Joshua Kim&apos;s Josh Assistant first.
                     </h2>
                     <p className="floating-chat-hero-copy">
                       Explore projects, experience, technical stack, and career
@@ -213,7 +213,7 @@ function FloatingChatLauncherInner({
               <div className="floating-chat-main">
                 <div className="floating-chat-main-head">
                   <div className="floating-chat-mobile-actions">
-                    <span className="floating-chat-mobile-title">AI Assistant</span>
+                    <span className="floating-chat-mobile-title">Josh Assistant</span>
                     <div className="floating-chat-mobile-actions-end">
                       <Link href="/ai" className="floating-chat-mobile-link">
                         Full page
@@ -277,7 +277,7 @@ function FloatingChatLauncherInner({
             />
           </svg>
         </span>
-        <span className="floating-chat-button-label">AI Assistant</span>
+        <span className="floating-chat-button-label">Josh Assistant</span>
       </button>
     </div>
   );

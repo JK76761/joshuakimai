@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import JoshAssistantAvatar from "@/components/JoshAssistantAvatar";
 
 type Message = {
   role: "user" | "assistant";
@@ -29,57 +30,19 @@ type StatusPayload = {
 
 type AssistantState = "checking" | "ready" | "disabled";
 
-const suggestedQuestions = [
-  {
-    label: "Recruiters",
-    prompt: "What should recruiters know first?",
-  },
-  {
-    label: "Tech Stack",
-    prompt: "What technologies does Joshua use most?",
-  },
-  {
-    label: "Experience",
-    prompt: "Tell me about Joshua's internship experience.",
-  },
-  {
-    label: "Career",
-    prompt: "What role is Joshua currently looking for?",
-  },
-];
-
-const launcherCategories = [
-  {
-    label: "Projects",
-    prompt: "Which projects best represent Joshua Kim's work?",
-  },
-  {
-    label: "Experience",
-    prompt: "Tell me about Joshua's internship experience.",
-  },
-  {
-    label: "Stack",
-    prompt: "What technologies does Joshua use most?",
-  },
-  {
-    label: "AI Use",
-    prompt: "How is AI used in this portfolio?",
-  },
-];
-
 function getIntroMessage(
   developerName: string,
   mode: "full" | "embedded" | "launcher" | "hero" | "overlay",
 ): string {
   if (mode === "launcher") {
-    return `Hi, I'm ${developerName}'s AI assistant. Ask about projects, stack, experience, or career focus.`;
+    return `Hi, I'm ${developerName}'s Josh Assistant. Ask about projects, stack, experience, or career focus.`;
   }
 
   if (mode === "overlay") {
     return `Ask me about ${developerName}'s projects, experience, stack, and current career focus.`;
   }
 
-  return `Hi, I'm ${developerName}'s AI assistant. Ask about projects, experience, technical strengths, or current career focus.`;
+  return `Hi, I'm ${developerName}'s Josh Assistant. Ask about projects, experience, technical strengths, or current career focus.`;
 }
 
 export default function Chatbox({
@@ -102,10 +65,8 @@ export default function Chatbox({
   const isHero = mode === "hero";
   const isLauncher = mode === "launcher";
   const isOverlay = mode === "overlay";
-  const suggestionItems = isLauncher || isOverlay ? launcherCategories : suggestedQuestions;
   const introMessage = getIntroMessage(developerName, mode);
   const isChatDisabled = assistantState !== "ready" || sessionDisabled;
-  const showSuggestions = assistantState === "ready";
   const disabledCardMessage =
     assistantState === "checking"
       ? "Checking OpenAI setup..."
@@ -297,30 +258,6 @@ export default function Chatbox({
               : "p-4 sm:p-6"
       }`}
     >
-      <div className={`space-y-2 ${isOverlay ? "mb-5" : "mb-4"}`}>
-        {(isLauncher || isOverlay) && showSuggestions ? (
-          <p className="chat-section-label">{isOverlay ? "Start with a topic" : "Quick topics"}</p>
-        ) : null}
-
-        {showSuggestions ? (
-          <div className="chat-chip-row">
-            {suggestionItems.map((item) => (
-              <button
-                key={item.label}
-                type="button"
-                onClick={() => sendMessage(item.prompt)}
-                disabled={loading || isChatDisabled}
-                className={`chat-chip px-3 py-1 text-xs font-semibold ${
-                  isLauncher || isOverlay ? "chat-chip-category" : ""
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-        ) : null}
-      </div>
-
       <div
         className={`chat-thread overflow-y-auto rounded-2xl p-4 ${
           isOverlay
@@ -335,28 +272,40 @@ export default function Chatbox({
         }`}
       >
         <div className="space-y-4">
-          <div data-role="assistant" className="chat-message text-sm">
-            {introMessage}
+          <div className="chat-message-row" data-role="assistant">
+            <JoshAssistantAvatar />
+            <div data-role="assistant" className="chat-message text-sm">
+              {introMessage}
+            </div>
           </div>
 
           {messages.map((message, index) => (
             <div
               key={`${message.role}-${index}`}
+              className="chat-message-row"
               data-role={message.role}
-              className="chat-message text-sm"
-              style={{ animationDelay: `${Math.min(index, 8) * 35}ms` }}
             >
-              {message.content}
+              {message.role === "assistant" ? <JoshAssistantAvatar /> : null}
+              <div
+                data-role={message.role}
+                className="chat-message text-sm"
+                style={{ animationDelay: `${Math.min(index, 8) * 35}ms` }}
+              >
+                {message.content}
+              </div>
             </div>
           ))}
 
           {loading ? (
-            <div data-role="assistant" className="chat-message text-sm">
-              <span className="typing-dots" aria-label="Assistant is typing">
-                <span />
-                <span />
-                <span />
-              </span>
+            <div className="chat-message-row" data-role="assistant">
+              <JoshAssistantAvatar />
+              <div data-role="assistant" className="chat-message text-sm">
+                <span className="typing-dots" aria-label="Assistant is typing">
+                  <span />
+                  <span />
+                  <span />
+                </span>
+              </div>
             </div>
           ) : null}
 

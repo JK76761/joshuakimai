@@ -66,7 +66,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error:
-            "This AI assistant is rate limited for abuse protection. Please wait a few minutes and try again.",
+            "Josh Assistant is rate limited for abuse protection. Please wait a few minutes and try again.",
         },
         {
           status: 429,

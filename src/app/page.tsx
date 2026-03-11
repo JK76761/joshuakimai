@@ -68,7 +68,7 @@ export default function HomePage() {
             </div>
 
             <p className="hero-proof-copy">
-              The AI assistant opens as a translucent full-screen layer on first
+              The Josh Assistant opens as a translucent full-screen layer on first
               visit, stays scoped to portfolio data, and is rate limited for abuse
               protection.
             </p>

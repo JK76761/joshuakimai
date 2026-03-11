@@ -12,13 +12,13 @@ export default function AIAssistantPage() {
         <Link href="/" className="link-inline text-sm font-semibold">
           Back to home
         </Link>
-        <p className="section-kicker">AI Assistant</p>
-        <h1 className="section-title">AI Assistant</h1>
+        <p className="section-kicker">Josh Assistant</p>
+        <h1 className="section-title">Josh Assistant</h1>
         <p className="section-copy">
           Ask about {displayName}&apos;s projects, experience, technical strengths,
-          and career focus. This assistant uses OpenAI to answer recruiter and project
-          questions directly from Joshua&apos;s portfolio context and is rate limited for
-          abuse protection.
+          and career focus. Josh Assistant uses OpenAI to answer recruiter and
+          project questions directly from Joshua&apos;s portfolio context and is rate
+          limited for abuse protection.
         </p>
         <p className="status-note" data-state="live">
           OpenAI-powered, portfolio-scoped, rate limited
