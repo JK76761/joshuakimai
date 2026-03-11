@@ -2086,11 +2086,12 @@ a {
   }
 
   .floating-chat-stage {
-    border-radius: 1.2rem;
-    inset: 0.45rem;
-    max-height: calc(100svh - 0.9rem);
-    max-width: calc(100vw - 0.9rem);
-    padding: calc(0.9rem + env(safe-area-inset-top)) 0.8rem calc(0.8rem + env(safe-area-inset-bottom));
+    border-radius: 1.35rem;
+    inset: auto 0.4rem 0.4rem 0.4rem;
+    max-height: calc(100dvh - 1rem);
+    max-width: calc(100vw - 0.8rem);
+    overflow: hidden;
+    padding: 0.72rem 0.72rem calc(0.72rem + env(safe-area-inset-bottom));
   }
 
   .floating-chat-button {
@@ -2108,24 +2109,24 @@ a {
   .floating-chat-layout {
     grid-template-columns: 1fr;
     grid-template-rows: auto minmax(0, 1fr);
-    gap: 0.8rem;
+    gap: 0.7rem;
     height: 100%;
   }
 
   .floating-chat-aside {
-    gap: 0.9rem;
-    grid-template-rows: auto auto auto auto;
-    padding: 0.95rem;
+    gap: 0.72rem;
+    grid-template-rows: auto auto auto;
+    padding: 0.88rem;
   }
 
   .floating-chat-aside-hero {
     align-items: center;
-    gap: 0.85rem;
-    grid-template-columns: minmax(6.25rem, 7rem) minmax(0, 1fr);
+    gap: 0.7rem;
+    grid-template-columns: 5.75rem minmax(0, 1fr);
   }
 
   .floating-chat-aside-copy {
-    gap: 0.5rem;
+    gap: 0.42rem;
   }
 
   .floating-chat-aside .assistant-presence {
@@ -2176,13 +2177,31 @@ a {
   }
 
   .floating-chat-hero-title {
-    font-size: 1.28rem;
+    font-size: 1.12rem;
     line-height: 1.08;
   }
 
   .floating-chat-hero-copy {
-    font-size: 0.84rem;
-    line-height: 1.55;
+    display: -webkit-box;
+    font-size: 0.78rem;
+    line-height: 1.48;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .floating-chat-kicker {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+  }
+
+  .floating-chat-badge-row {
+    gap: 0.42rem;
+  }
+
+  .floating-chat-badge {
+    font-size: 0.62rem;
+    padding: 0.38rem 0.62rem;
   }
 
   .floating-chat-secondary-link,
@@ -2191,7 +2210,7 @@ a {
   }
 
   .floating-chat-aside-actions {
-    gap: 0.6rem;
+    display: none;
   }
 
   .floating-chat-inline-note {
@@ -2199,8 +2218,8 @@ a {
   }
 
   .floating-chat-close-overlay {
-    right: 0.75rem;
-    top: calc(0.75rem + env(safe-area-inset-top));
+    right: 0.7rem;
+    top: 0.7rem;
   }
 
   .chat-shell[data-chat-mode="launcher"] {
@@ -2239,7 +2258,7 @@ a {
   .chat-shell[data-chat-mode="overlay"] .chat-thread {
     height: 100% !important;
     min-height: 0;
-    padding: 0.9rem;
+    padding: 0.88rem;
   }
 
   .chat-shell[data-chat-mode="overlay"] .chat-message {
@@ -2249,6 +2268,7 @@ a {
   }
 
   .chat-shell[data-chat-mode="overlay"] .chat-textarea {
+    font-size: 16px;
     min-height: 6.25rem;
   }
 
@@ -2264,6 +2284,38 @@ a {
   .chat-shell[data-chat-mode="overlay"] .chat-disabled-card {
     min-height: 4.75rem;
     padding: 0.95rem 1rem;
+  }
+
+  .floating-chat-main {
+    gap: 0.72rem;
+    min-height: 0;
+    padding: 0.88rem;
+  }
+
+  .floating-chat-main-head {
+    gap: 0.2rem;
+  }
+
+  .floating-chat-main-label {
+    font-size: 0.74rem;
+  }
+
+  .floating-chat-main-copy {
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+
+  .chat-compose {
+    gap: 0.65rem;
+    margin-top: 0.7rem;
+  }
+
+  .chat-helper-text {
+    font-size: 0.7rem;
+  }
+
+  .chat-send-button {
+    min-height: 2.7rem;
   }
 }
 
