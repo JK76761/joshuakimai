@@ -3,10 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import AssistantFigure from "@/components/AssistantFigure";
 import Chatbox from "@/components/Chatbox";
 
 type FloatingChatLauncherProps = {
   developerName: string;
+};
+
+type StatusPayload = {
+  configured?: boolean;
 };
 
 export default function FloatingChatLauncher({
@@ -30,30 +35,52 @@ function FloatingChatLauncherInner({
   developerName,
 }: FloatingChatLauncherProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [companionActive, setCompanionActive] = useState(false);
+  const [assistantState, setAssistantState] = useState<
+    "checking" | "ready" | "disabled"
+  >("checking");
   const pathname = usePathname();
-  const isHome = pathname === "/";
 
   useEffect(() => {
-    if (!isHome) {
-      return;
-    }
-
-    const storageKey = "jk-ai-autolaunch-seen";
-    const hasLaunched = window.sessionStorage.getItem(storageKey);
-
-    if (hasLaunched) {
-      return;
-    }
-
     const timeoutId = window.setTimeout(() => {
       setIsOpen(true);
-      window.sessionStorage.setItem(storageKey, "1");
-    }, 700);
+    }, 260);
 
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [isHome]);
+  }, [pathname]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadStatus() {
+      try {
+        const response = await fetch("/api/chat/status", {
+          cache: "no-store",
+        });
+        const payload = (await response.json()) as StatusPayload;
+
+        if (!active) {
+          return;
+        }
+
+        setAssistantState(response.ok && payload.configured ? "ready" : "disabled");
+      } catch {
+        if (!active) {
+          return;
+        }
+
+        setAssistantState("disabled");
+      }
+    }
+
+    void loadStatus();
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (!isOpen) {
@@ -76,6 +103,21 @@ function FloatingChatLauncherInner({
     };
   }, [isOpen]);
 
+  const statusLabel =
+    assistantState === "ready"
+      ? "OpenAI live"
+      : assistantState === "checking"
+        ? "Checking setup"
+        : "Setup needed";
+  const companionCaption =
+    assistantState === "checking"
+      ? "Checking OpenAI..."
+      : assistantState === "disabled"
+      ? "OpenAI setup needed"
+      : companionActive
+        ? "Thinking..."
+        : "Ask me about Joshua";
+
   return (
     <div className="floating-chat-shell">
       {isOpen ? (
@@ -94,51 +136,29 @@ function FloatingChatLauncherInner({
           />
 
           <div className="floating-chat-stage">
-            <div className="floating-chat-stage-top">
-              <div className="floating-chat-meta-row">
-                <p className="floating-chat-kicker">AI Assistant</p>
-                <span className="floating-chat-overlay-note">OpenAI powered</span>
-              </div>
-
-              <div className="floating-chat-stage-actions">
-                <Link href="/ai" className="floating-chat-secondary-link">
-                  Open dedicated page
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => setIsOpen(false)}
-                  className="floating-chat-close"
-                  aria-label="Close assistant"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path
-                      d="M7 7l10 10M17 7 7 17"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeWidth="1.75"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="floating-chat-close floating-chat-close-overlay"
+              aria-label="Close assistant"
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M7 7l10 10M17 7 7 17"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth="1.75"
+                />
+              </svg>
+            </button>
 
             <div className="floating-chat-layout">
               <aside className="floating-chat-aside">
-                <div className="floating-chat-avatar" aria-hidden="true">
-                  <div className="floating-chat-avatar-ring floating-chat-avatar-ring-1" />
-                  <div className="floating-chat-avatar-ring floating-chat-avatar-ring-2" />
-                  <div className="floating-chat-avatar-core">
-                    <svg viewBox="0 0 40 40" fill="none">
-                      <circle cx="20" cy="20" r="4.6" fill="currentColor" />
-                      <path
-                        d="M20 6v5M20 29v5M6 20h5M29 20h5M10.7 10.7l3.5 3.5M25.8 25.8l3.5 3.5M29.3 10.7l-3.5 3.5M14.2 25.8l-3.5 3.5"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeWidth="1.8"
-                      />
-                    </svg>
-                  </div>
-                </div>
+                <p className="floating-chat-kicker">AI Assistant</p>
+                <AssistantFigure
+                  active={companionActive}
+                  caption={companionCaption}
+                />
 
                 <div className="space-y-4">
                   <h2 id="floating-ai-title" className="floating-chat-hero-title">
@@ -154,10 +174,15 @@ function FloatingChatLauncherInner({
                 <div className="floating-chat-badge-row">
                   <span className="floating-chat-badge">Portfolio scoped</span>
                   <span className="floating-chat-badge">Rate limited</span>
-                  <span className="floating-chat-badge">Live OpenAI</span>
+                  <span className="floating-chat-badge" data-state={assistantState}>
+                    {statusLabel}
+                  </span>
                 </div>
 
                 <div className="floating-chat-aside-actions">
+                  <Link href="/ai" className="floating-chat-secondary-link">
+                    Open dedicated page
+                  </Link>
                   <button
                     type="button"
                     onClick={() => setIsOpen(false)}
@@ -178,7 +203,11 @@ function FloatingChatLauncherInner({
                     Ask directly, or use one of the guided prompts below.
                   </p>
                 </div>
-                <Chatbox developerName={developerName} mode="overlay" />
+                <Chatbox
+                  developerName={developerName}
+                  mode="overlay"
+                  onActivityChange={setCompanionActive}
+                />
               </div>
             </div>
           </div>

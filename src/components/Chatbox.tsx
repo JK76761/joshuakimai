@@ -10,6 +10,7 @@ type Message = {
 type ChatboxProps = {
   developerName: string;
   mode?: "full" | "embedded" | "launcher" | "hero" | "overlay";
+  onActivityChange?: (active: boolean) => void;
 };
 
 type ChatPayload = {
@@ -81,6 +82,7 @@ function getIntroMessage(
 export default function Chatbox({
   developerName,
   mode = "full",
+  onActivityChange,
 }: ChatboxProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -97,6 +99,15 @@ export default function Chatbox({
   const suggestionItems = isLauncher || isOverlay ? launcherCategories : suggestedQuestions;
   const introMessage = getIntroMessage(developerName, mode);
   const isChatDisabled = assistantState !== "ready" || sessionDisabled;
+  const showSuggestions = assistantState === "ready";
+  const disabledCardMessage =
+    assistantState === "checking"
+      ? "Checking OpenAI setup..."
+      : assistantState === "disabled"
+        ? statusMessage || "OpenAI is not configured for this deployment."
+        : sessionDisabled
+          ? error || "OpenAI chat is currently unavailable."
+          : null;
   const canSubmit = useMemo(
     () => input.trim().length > 0 && !loading && !isChatDisabled,
     [input, loading, isChatDisabled],
@@ -105,6 +116,10 @@ export default function Chatbox({
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
+
+  useEffect(() => {
+    onActivityChange?.(loading);
+  }, [loading, onActivityChange]);
 
   useEffect(() => {
     let active = true;
@@ -229,25 +244,27 @@ export default function Chatbox({
       }`}
     >
       <div className={`space-y-2 ${isOverlay ? "mb-5" : "mb-4"}`}>
-        {isLauncher || isOverlay ? (
+        {(isLauncher || isOverlay) && showSuggestions ? (
           <p className="chat-section-label">{isOverlay ? "Start with a topic" : "Quick topics"}</p>
         ) : null}
 
-        <div className="flex flex-wrap gap-2">
-          {suggestionItems.map((item) => (
-            <button
-              key={item.label}
-              type="button"
-              onClick={() => sendMessage(item.prompt)}
-              disabled={loading || isChatDisabled}
-              className={`chat-chip px-3 py-1 text-xs font-semibold ${
-                isLauncher || isOverlay ? "chat-chip-category" : ""
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
+        {showSuggestions ? (
+          <div className="flex flex-wrap gap-2">
+            {suggestionItems.map((item) => (
+              <button
+                key={item.label}
+                type="button"
+                onClick={() => sendMessage(item.prompt)}
+                disabled={loading || isChatDisabled}
+                className={`chat-chip px-3 py-1 text-xs font-semibold ${
+                  isLauncher || isOverlay ? "chat-chip-category" : ""
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        ) : null}
       </div>
 
       <div
@@ -293,54 +310,46 @@ export default function Chatbox({
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-4 space-y-3">
-        <textarea
-          value={input}
-          onChange={(event) => setInput(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter" && !event.shiftKey) {
-              event.preventDefault();
+      {disabledCardMessage ? (
+        <div className="chat-disabled-card">{disabledCardMessage}</div>
+      ) : (
+        <form onSubmit={handleSubmit} className="mt-4 space-y-3">
+          <textarea
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
 
-              if (canSubmit) {
-                void sendMessage(input);
+                if (canSubmit) {
+                  void sendMessage(input);
+                }
               }
-            }
-          }}
-          rows={isLauncher || isHero ? 2 : isEmbedded ? 2 : isOverlay ? 3 : 3}
-          disabled={loading || isChatDisabled}
-          placeholder={
-            assistantState === "disabled"
-              ? "OpenAI is not configured for this deployment."
-              : sessionDisabled
-                ? "OpenAI chat is currently unavailable."
-                : "Ask about Joshua's projects, stack, experience, or career focus..."
-          }
-          className="chat-textarea w-full resize-none rounded-2xl px-4 py-3 text-sm outline-none transition"
-        />
+            }}
+            rows={isLauncher || isHero ? 2 : isEmbedded ? 2 : isOverlay ? 3 : 3}
+            disabled={loading || isChatDisabled}
+            placeholder="Ask about Joshua's projects, stack, experience, or career focus..."
+            className="chat-textarea w-full resize-none rounded-2xl px-4 py-3 text-sm outline-none transition"
+          />
 
-        <div
-          className={`flex gap-3 ${
-            isLauncher || isHero ? "justify-end" : "items-center justify-between"
-          } ${isOverlay ? "flex-col items-stretch sm:flex-row sm:items-center" : ""}`}
-        >
-          {!isLauncher && !isHero ? (
-            <p className="chat-helper-text">Shift + Enter for a new line.</p>
-          ) : null}
-          <button
-            type="submit"
-            disabled={!canSubmit}
-            className="chat-send-button"
+          <div
+            className={`flex gap-3 ${
+              isLauncher || isHero ? "justify-end" : "items-center justify-between"
+            } ${isOverlay ? "flex-col items-stretch sm:flex-row sm:items-center" : ""}`}
           >
-            Send
-          </button>
-        </div>
-
-        {assistantState === "checking" ? (
-          <p className="chat-helper-text">Checking OpenAI setup...</p>
-        ) : null}
-        {statusMessage ? <p className="chat-status-text">{statusMessage}</p> : null}
-        {error ? <p className="chat-error-text">{error}</p> : null}
-      </form>
+            {!isLauncher && !isHero ? (
+              <p className="chat-helper-text">Shift + Enter for a new line.</p>
+            ) : null}
+            <button
+              type="submit"
+              disabled={!canSubmit}
+              className="chat-send-button"
+            >
+              Send
+            </button>
+          </div>
+        </form>
+      )}
     </section>
   );
 }
