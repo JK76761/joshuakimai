@@ -1419,15 +1419,15 @@ a {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(248, 248, 246, 0.42));
   border: 1px solid rgba(24, 26, 29, 0.08);
   border-radius: 1.6rem;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 0.45rem;
-  grid-template-rows: auto minmax(0, 1fr);
   min-height: 0;
   padding: 0.95rem 1rem 0.9rem;
 }
 
 .floating-chat-main-head {
-  display: contents;
+  display: none;
 }
 
 .floating-chat-mobile-actions {
@@ -1849,6 +1849,7 @@ a {
   border-radius: 0;
   box-shadow: none;
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   height: 100%;
   min-height: 0;
@@ -2631,13 +2632,15 @@ a {
     border: 0;
     border-radius: 0;
     box-shadow: none;
+    display: flex;
+    flex-direction: column;
     gap: 0.72rem;
-    grid-template-rows: auto minmax(0, 1fr);
     min-height: 0;
     padding: calc(0.7rem + env(safe-area-inset-top)) 0.85rem calc(0.8rem + env(safe-area-inset-bottom));
   }
 
   .floating-chat-main-head {
+    display: block;
     gap: 0.35rem;
   }
 
