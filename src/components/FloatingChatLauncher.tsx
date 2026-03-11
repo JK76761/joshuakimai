@@ -166,21 +166,23 @@ function FloatingChatLauncherInner({
             <div className="floating-chat-layout">
               <aside className="floating-chat-aside">
                 <p className="floating-chat-kicker">AI Assistant</p>
-                <AssistantFigure
-                  active={presence.phase !== "idle"}
-                  caption={companionCaption}
-                  phase={presence.phase}
-                />
+                <div className="floating-chat-aside-hero">
+                  <AssistantFigure
+                    active={presence.phase !== "idle"}
+                    caption={companionCaption}
+                    phase={presence.phase}
+                  />
 
-                <div className="space-y-4">
-                  <h2 id="floating-ai-title" className="floating-chat-hero-title">
-                    Ask Joshua Kim&apos;s AI assistant first.
-                  </h2>
-                  <p className="floating-chat-hero-copy">
-                    Explore projects, experience, technical stack, and career focus
-                    in a full-screen chat layer while the portfolio stays visible
-                    behind it.
-                  </p>
+                  <div className="floating-chat-aside-copy">
+                    <h2 id="floating-ai-title" className="floating-chat-hero-title">
+                      Ask Joshua Kim&apos;s AI assistant first.
+                    </h2>
+                    <p className="floating-chat-hero-copy">
+                      Explore projects, experience, technical stack, and career
+                      focus in a full-screen chat layer while the portfolio stays
+                      visible behind it.
+                    </p>
+                  </div>
                 </div>
 
                 <div className="floating-chat-badge-row">

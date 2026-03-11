@@ -303,7 +303,7 @@ export default function Chatbox({
         ) : null}
 
         {showSuggestions ? (
-          <div className="flex flex-wrap gap-2">
+          <div className="chat-chip-row">
             {suggestionItems.map((item) => (
               <button
                 key={item.label}
@@ -367,13 +367,13 @@ export default function Chatbox({
       {disabledCardMessage ? (
         <div className="chat-disabled-card">{disabledCardMessage}</div>
       ) : (
-        <form onSubmit={handleSubmit} className="mt-4 space-y-3">
+        <form onSubmit={handleSubmit} className="chat-compose">
           <textarea
-          value={input}
-          onChange={(event) => setInput(event.target.value)}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          onKeyDown={(event) => {
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            onKeyDown={(event) => {
               if (event.key === "Enter" && !event.shiftKey) {
                 event.preventDefault();
 
@@ -389,7 +389,7 @@ export default function Chatbox({
           />
 
           <div
-            className={`flex gap-3 ${
+            className={`chat-compose-actions ${
               isLauncher || isHero ? "justify-end" : "items-center justify-between"
             } ${isOverlay ? "flex-col items-stretch sm:flex-row sm:items-center" : ""}`}
           >
