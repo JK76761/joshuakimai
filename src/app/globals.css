@@ -1005,11 +1005,12 @@ a {
   box-shadow: none;
   display: grid;
   gap: 1.3rem;
+  height: min(52rem, calc(100svh - 2.2rem));
   inset: 1.1rem;
   margin: auto;
   max-height: min(52rem, calc(100svh - 2.2rem));
   max-width: min(76rem, calc(100vw - 2.2rem));
-  overflow: auto;
+  overflow: hidden;
   padding: 1.1rem;
   position: absolute;
   scrollbar-width: none;
@@ -1148,6 +1149,7 @@ a {
   display: grid;
   gap: 1rem;
   grid-template-columns: minmax(18rem, 24rem) minmax(0, 1fr);
+  height: 100%;
   min-height: 0;
 }
 
