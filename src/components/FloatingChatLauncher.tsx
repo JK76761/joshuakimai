@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import AssistantFigure from "@/components/AssistantFigure";
 import Chatbox from "@/components/Chatbox";
 
 type FloatingChatLauncherProps = {
@@ -34,6 +35,12 @@ function FloatingChatLauncherInner({
   developerName,
 }: FloatingChatLauncherProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [presence, setPresence] = useState<{
+    phase: "idle" | "listening" | "typing" | "thinking" | "replying";
+    preview?: string;
+  }>({
+    phase: "idle",
+  });
   const [assistantState, setAssistantState] = useState<
     "checking" | "ready" | "disabled"
   >("checking");
@@ -107,6 +114,20 @@ function FloatingChatLauncherInner({
       : assistantState === "checking"
         ? "Checking setup"
         : "Setup needed";
+  const companionCaption =
+    assistantState === "checking"
+      ? "Checking OpenAI..."
+      : assistantState === "disabled"
+        ? "OpenAI setup needed"
+        : presence.phase === "thinking"
+          ? "Thinking..."
+          : presence.phase === "listening"
+            ? "I'm listening"
+          : presence.phase === "typing"
+            ? presence.preview || "Keep typing..."
+            : presence.phase === "replying"
+              ? "I have a reply for you"
+              : "Ask me about Joshua";
 
   return (
     <div className="floating-chat-shell">
@@ -126,47 +147,88 @@ function FloatingChatLauncherInner({
           />
 
           <div className="floating-chat-stage">
-            <div className="floating-chat-panel">
-              <div className="floating-chat-header">
-                <div className="floating-chat-header-copy">
-                  <p className="floating-chat-header-kicker">AI Assistant</p>
-                  <h2 id="floating-ai-title" className="floating-chat-header-title">
-                    Ask Joshua Kim
-                  </h2>
-                  <p className="floating-chat-header-subtitle">
-                    Ask about projects, experience, stack, and current career focus.
-                  </p>
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="floating-chat-close floating-chat-close-overlay"
+              aria-label="Close assistant"
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M7 7l10 10M17 7 7 17"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth="1.75"
+                />
+              </svg>
+            </button>
+
+            <div className="floating-chat-layout">
+              <aside className="floating-chat-aside">
+                <p className="floating-chat-kicker">AI Assistant</p>
+                <div className="floating-chat-aside-hero">
+                  <AssistantFigure
+                    active={presence.phase !== "idle"}
+                    caption={companionCaption}
+                    phase={presence.phase}
+                  />
+
+                  <div className="floating-chat-aside-copy">
+                    <h2 id="floating-ai-title" className="floating-chat-hero-title">
+                      Ask Joshua Kim&apos;s AI assistant first.
+                    </h2>
+                    <p className="floating-chat-hero-copy">
+                      Explore projects, experience, technical stack, and career
+                      focus in a full-screen chat layer while the portfolio stays
+                      visible behind it.
+                    </p>
+                  </div>
                 </div>
 
-                <div className="floating-chat-header-actions">
-                  <span className="floating-chat-status-pill" data-state={assistantState}>
+                <div className="floating-chat-badge-row">
+                  <span className="floating-chat-badge">Portfolio scoped</span>
+                  <span className="floating-chat-badge">Rate limited</span>
+                  <span className="floating-chat-badge" data-state={assistantState}>
                     {statusLabel}
                   </span>
-                  <Link href="/ai" className="floating-chat-header-link">
-                    Full page
+                </div>
+
+                <div className="floating-chat-aside-actions">
+                  <Link href="/ai" className="floating-chat-secondary-link">
+                    Open dedicated page
                   </Link>
                   <button
                     type="button"
                     onClick={() => setIsOpen(false)}
-                    className="floating-chat-close"
-                    aria-label="Close assistant"
+                    className="floating-chat-dismiss"
                   >
-                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path
-                        d="M7 7l10 10M17 7 7 17"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeWidth="1.75"
-                      />
-                    </svg>
+                    Continue to portfolio
                   </button>
+                  <p className="floating-chat-inline-note">
+                    Press <kbd>Esc</kbd> or close at any time.
+                  </p>
                 </div>
-              </div>
+              </aside>
 
-              <Chatbox
-                developerName={developerName}
-                mode="overlay"
-              />
+              <div className="floating-chat-main">
+                <div className="floating-chat-main-head">
+                  <div className="floating-chat-mobile-actions">
+                    <span className="floating-chat-mobile-title">AI Assistant</span>
+                    <Link href="/ai" className="floating-chat-mobile-link">
+                      Full page
+                    </Link>
+                  </div>
+                  <p className="floating-chat-main-label">Start with a question</p>
+                  <p className="floating-chat-main-copy">
+                    Ask directly, or use one of the guided prompts below.
+                  </p>
+                </div>
+                <Chatbox
+                  developerName={developerName}
+                  mode="overlay"
+                  onPresenceChange={setPresence}
+                />
+              </div>
             </div>
           </div>
         </div>
