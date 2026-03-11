@@ -101,7 +101,7 @@ export default function HomePage() {
 
           <article className="snapshot-card">
             <p className="snapshot-label">Open to</p>
-            <p className="snapshot-value">Graduate and support roles</p>
+            <p className="snapshot-value">Junior and support roles</p>
             <p className="snapshot-note">{profile.availability}</p>
           </article>
 
@@ -205,7 +205,7 @@ export default function HomePage() {
         <div className="contact-grid">
           <div className="space-y-5">
             <p className="section-copy max-w-xl">
-              Email is the fastest way to reach me for graduate software engineering,
+              Email is the fastest way to reach me for junior software engineering,
               IT support, or internship-related opportunities.
             </p>
 

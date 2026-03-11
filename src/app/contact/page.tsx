@@ -31,7 +31,7 @@ export default function ContactPage() {
             </a>
 
             <p className="section-copy max-w-xl">
-              I&apos;m currently open to graduate software roles and IT support-focused
+              I&apos;m currently open to junior software roles and IT support-focused
               opportunities. If there&apos;s a team or project worth discussing, email is
               the best starting point.
             </p>
