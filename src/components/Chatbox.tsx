@@ -11,7 +11,7 @@ type ChatboxProps = {
   developerName: string;
   mode?: "full" | "embedded" | "launcher" | "hero" | "overlay";
   onPresenceChange?: (state: {
-    phase: "idle" | "typing" | "thinking" | "replying";
+    phase: "idle" | "listening" | "typing" | "thinking" | "replying";
     preview?: string;
   }) => void;
 };
@@ -94,6 +94,9 @@ export default function Chatbox({
   const [assistantState, setAssistantState] = useState<AssistantState>("checking");
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [sessionDisabled, setSessionDisabled] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [replyPreview, setReplyPreview] = useState<string | null>(null);
+  const [replyTick, setReplyTick] = useState(0);
   const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
   const isEmbedded = mode === "embedded";
   const isHero = mode === "hero";
@@ -137,15 +140,33 @@ export default function Chatbox({
       return;
     }
 
-    const latestAssistant = [...messages]
-      .reverse()
-      .find((message) => message.role === "assistant");
+    if (isFocused) {
+      onPresenceChange?.({
+        phase: "listening",
+        preview: "I'm listening",
+      });
+      return;
+    }
 
     onPresenceChange?.({
-      phase: latestAssistant ? "replying" : "idle",
-      preview: latestAssistant?.content.slice(0, 42),
+      phase: replyPreview ? "replying" : "idle",
+      preview: replyPreview || undefined,
     });
-  }, [input, loading, messages, onPresenceChange]);
+  }, [input, isFocused, loading, onPresenceChange, replyPreview, replyTick]);
+
+  useEffect(() => {
+    if (!replyPreview) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setReplyPreview(null);
+    }, 1800);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [replyPreview, replyTick]);
 
   useEffect(() => {
     let active = true;
@@ -231,6 +252,11 @@ export default function Chatbox({
             "The assistant returned an empty response. Try a different question.",
         },
       ]);
+      const preview =
+        payload.answer ||
+        "The assistant returned an empty response. Try a different question.";
+      setReplyPreview(preview.slice(0, 42));
+      setReplyTick((current) => current + 1);
     } catch (caughtError) {
       const message =
         caughtError instanceof Error
@@ -246,6 +272,8 @@ export default function Chatbox({
           content: `OpenAI chat is unavailable right now. ${message}`,
         },
       ]);
+      setReplyPreview("I need a moment to recover.");
+      setReplyTick((current) => current + 1);
     } finally {
       setLoading(false);
     }
@@ -341,9 +369,11 @@ export default function Chatbox({
       ) : (
         <form onSubmit={handleSubmit} className="mt-4 space-y-3">
           <textarea
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            onKeyDown={(event) => {
+          value={input}
+          onChange={(event) => setInput(event.target.value)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          onKeyDown={(event) => {
               if (event.key === "Enter" && !event.shiftKey) {
                 event.preventDefault();
 

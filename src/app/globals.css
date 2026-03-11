@@ -1291,6 +1291,13 @@ a {
   justify-items: start;
 }
 
+.assistant-presence-visual {
+  display: grid;
+  place-items: center;
+  position: relative;
+  width: 100%;
+}
+
 .assistant-presence-bubble {
   align-items: center;
   background: rgba(255, 255, 255, 0.68);
@@ -1321,6 +1328,8 @@ a {
   max-width: 16.5rem;
   width: 100%;
   animation: assistant-bob 5.2s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
 }
 
 .assistant-presence[data-compact="true"] .assistant-presence-svg {
@@ -1355,13 +1364,6 @@ a {
   animation-duration: 1.5s;
 }
 
-.assistant-presence[data-phase="thinking"] .assistant-character-badge-left,
-.assistant-presence[data-phase="thinking"] .assistant-character-badge-top,
-.assistant-presence[data-phase="thinking"] .assistant-character-badge-right,
-.assistant-presence[data-phase="thinking"] .assistant-character-badge-small {
-  animation-duration: 1.2s;
-}
-
 .assistant-presence[data-phase="thinking"] .assistant-character-screen {
   filter: drop-shadow(0 0 18px rgba(90, 163, 255, 0.28));
 }
@@ -1375,18 +1377,12 @@ a {
   animation-duration: 2s;
 }
 
-.assistant-presence[data-phase="replying"] .assistant-character-badge-left,
-.assistant-presence[data-phase="replying"] .assistant-character-badge-top,
-.assistant-presence[data-phase="replying"] .assistant-character-badge-right,
-.assistant-presence[data-phase="replying"] .assistant-character-badge-small {
-  animation-duration: 1.6s;
-}
-
 .assistant-character-shadow {
   fill: rgba(24, 26, 29, 0.08);
 }
 
 .assistant-character-figure {
+  transform-box: fill-box;
   transform-origin: center;
   animation: assistant-bob 5.4s ease-in-out infinite;
 }
@@ -1397,41 +1393,15 @@ a {
   animation: assistant-blink 5.8s ease-in-out infinite;
 }
 
-.assistant-character-badge {
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-.assistant-character-badge-left {
-  animation: assistant-badge-float 4s ease-in-out infinite;
-}
-
-.assistant-character-badge-top {
-  animation: assistant-badge-float 4.6s ease-in-out infinite 180ms;
-}
-
-.assistant-character-badge-right {
-  animation: assistant-badge-float 4.2s ease-in-out infinite 320ms;
-}
-
-.assistant-character-badge-small {
-  animation: assistant-badge-float 4.8s ease-in-out infinite 140ms;
-}
-
 .assistant-character-laptop,
 .assistant-character-screen {
+  transform-box: fill-box;
+  transform-origin: center;
   transition: transform 180ms ease, filter 180ms ease;
 }
 
 .assistant-presence[data-active="true"] .assistant-character-figure {
   animation-duration: 2.4s;
-}
-
-.assistant-presence[data-active="true"] .assistant-character-badge-left,
-.assistant-presence[data-active="true"] .assistant-character-badge-top,
-.assistant-presence[data-active="true"] .assistant-character-badge-right,
-.assistant-presence[data-active="true"] .assistant-character-badge-small {
-  animation-duration: 1.8s;
 }
 
 .assistant-presence[data-active="true"] .assistant-character-laptop {
@@ -1444,6 +1414,121 @@ a {
 
 .assistant-presence[data-phase="replying"] .assistant-character-eye {
   animation-duration: 3.6s;
+}
+
+.assistant-tech-orbit {
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.assistant-tech-chip {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.assistant-tech-chip-body {
+  align-items: center;
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(24, 26, 29, 0.08);
+  border-radius: 9999px;
+  box-shadow: 0 18px 34px -28px rgba(28, 30, 34, 0.18);
+  display: inline-flex;
+  gap: 0.5rem;
+  min-width: 7.4rem;
+  padding: 0.46rem 0.72rem 0.46rem 0.46rem;
+}
+
+.assistant-tech-icon {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 1.85rem;
+  justify-content: center;
+  width: 1.85rem;
+}
+
+.assistant-tech-icon svg {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.assistant-tech-label {
+  color: var(--text-strong);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.assistant-tech-orbit-1 {
+  animation: orbit-sweep-1 11s linear infinite;
+}
+
+.assistant-tech-orbit-1 .assistant-tech-chip {
+  transform: translate(-50%, -50%) translateY(-8.6rem);
+}
+
+.assistant-tech-orbit-2 {
+  animation: orbit-sweep-2 13.5s linear infinite reverse;
+}
+
+.assistant-tech-orbit-2 .assistant-tech-chip {
+  transform: translate(-50%, -50%) translateY(-9.8rem);
+}
+
+.assistant-tech-orbit-3 {
+  animation: orbit-sweep-3 10.5s linear infinite;
+}
+
+.assistant-tech-orbit-3 .assistant-tech-chip {
+  transform: translate(-50%, -50%) translateY(-7.1rem);
+}
+
+.assistant-tech-orbit-4 {
+  animation: orbit-sweep-4 12.5s linear infinite reverse;
+}
+
+.assistant-tech-orbit-4 .assistant-tech-chip {
+  transform: translate(-50%, -50%) translateY(-10.4rem);
+}
+
+.assistant-tech-orbit .assistant-tech-chip-body {
+  animation: orbit-chip-counter 11s linear infinite;
+}
+
+.assistant-tech-orbit-2 .assistant-tech-chip-body {
+  animation-duration: 13.5s;
+}
+
+.assistant-tech-orbit-3 .assistant-tech-chip-body {
+  animation-duration: 10.5s;
+}
+
+.assistant-tech-orbit-4 .assistant-tech-chip-body {
+  animation-duration: 12.5s;
+}
+
+.assistant-presence[data-phase="thinking"] .assistant-tech-orbit-1,
+.assistant-presence[data-phase="thinking"] .assistant-tech-orbit-2,
+.assistant-presence[data-phase="thinking"] .assistant-tech-orbit-3,
+.assistant-presence[data-phase="thinking"] .assistant-tech-orbit-4 {
+  animation-duration: 5.5s;
+}
+
+.assistant-presence[data-phase="thinking"] .assistant-tech-orbit .assistant-tech-chip-body {
+  animation-duration: 5.5s;
+}
+
+.assistant-presence[data-phase="typing"] .assistant-tech-chip-body,
+.assistant-presence[data-phase="replying"] .assistant-tech-chip-body {
+  box-shadow: 0 22px 40px -28px rgba(28, 30, 34, 0.24);
 }
 
 .chat-shell {
@@ -1830,6 +1915,56 @@ a {
 
   50% {
     transform: translateY(-5px) rotate(-2deg);
+  }
+}
+
+@keyframes orbit-sweep-1 {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit-sweep-2 {
+  from {
+    transform: rotate(45deg);
+  }
+
+  to {
+    transform: rotate(405deg);
+  }
+}
+
+@keyframes orbit-sweep-3 {
+  from {
+    transform: rotate(120deg);
+  }
+
+  to {
+    transform: rotate(480deg);
+  }
+}
+
+@keyframes orbit-sweep-4 {
+  from {
+    transform: rotate(210deg);
+  }
+
+  to {
+    transform: rotate(570deg);
+  }
+}
+
+@keyframes orbit-chip-counter {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
   }
 }
 

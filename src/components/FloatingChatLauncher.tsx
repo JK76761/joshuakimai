@@ -36,7 +36,7 @@ function FloatingChatLauncherInner({
 }: FloatingChatLauncherProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [presence, setPresence] = useState<{
-    phase: "idle" | "typing" | "thinking" | "replying";
+    phase: "idle" | "listening" | "typing" | "thinking" | "replying";
     preview?: string;
   }>({
     phase: "idle",
@@ -121,6 +121,8 @@ function FloatingChatLauncherInner({
         ? "OpenAI setup needed"
         : presence.phase === "thinking"
           ? "Thinking..."
+          : presence.phase === "listening"
+            ? "I'm listening"
           : presence.phase === "typing"
             ? presence.preview || "Keep typing..."
             : presence.phase === "replying"

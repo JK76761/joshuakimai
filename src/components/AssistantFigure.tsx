@@ -2,8 +2,104 @@ type AssistantFigureProps = {
   active?: boolean;
   caption?: string;
   compact?: boolean;
-  phase?: "idle" | "typing" | "thinking" | "replying";
+  phase?: "idle" | "listening" | "typing" | "thinking" | "replying";
 };
+
+const techOrbits = [
+  {
+    id: "typescript",
+    label: "TypeScript",
+    short: "TS",
+    color: "#3178c6",
+  },
+  {
+    id: "javascript",
+    label: "JavaScript",
+    short: "JS",
+    color: "#f7df1e",
+  },
+  {
+    id: "react",
+    label: "React",
+    short: "RE",
+    color: "#61dafb",
+  },
+  {
+    id: "next",
+    label: "Next.js",
+    short: "NX",
+    color: "#111111",
+  },
+];
+
+function TechIcon({
+  id,
+  short,
+  color,
+}: {
+  id: string;
+  short: string;
+  color: string;
+}) {
+  if (id === "react") {
+    return (
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="2.6" fill={color} />
+        <ellipse cx="16" cy="16" rx="10.2" ry="4.1" stroke={color} strokeWidth="1.8" />
+        <ellipse
+          cx="16"
+          cy="16"
+          rx="10.2"
+          ry="4.1"
+          stroke={color}
+          strokeWidth="1.8"
+          transform="rotate(60 16 16)"
+        />
+        <ellipse
+          cx="16"
+          cy="16"
+          rx="10.2"
+          ry="4.1"
+          stroke={color}
+          strokeWidth="1.8"
+          transform="rotate(120 16 16)"
+        />
+      </svg>
+    );
+  }
+
+  if (id === "next") {
+    return (
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="12" fill="#ffffff" />
+        <path
+          d="M11 21V10l10 11V10"
+          stroke={color}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2.2"
+        />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <rect x="4" y="4" width="24" height="24" rx="7" fill={color} />
+      <text
+        x="16"
+        y="20"
+        fill={id === "javascript" ? "#111111" : "#ffffff"}
+        fontFamily="Arial, sans-serif"
+        fontSize="10.5"
+        fontWeight="700"
+        textAnchor="middle"
+      >
+        {short}
+      </text>
+    </svg>
+  );
+}
 
 export default function AssistantFigure({
   active = false,
@@ -24,13 +120,31 @@ export default function AssistantFigure({
         {caption}
       </div>
 
-      <svg
-        viewBox="0 0 320 280"
-        className="assistant-presence-svg"
-        fill="none"
-        role="presentation"
-      >
-        <defs>
+      <div className="assistant-presence-visual">
+        {techOrbits.map((item, index) => (
+          <div
+            key={item.id}
+            className={`assistant-tech-orbit assistant-tech-orbit-${index + 1}`}
+            aria-hidden="true"
+          >
+            <div className="assistant-tech-chip">
+              <div className="assistant-tech-chip-body">
+                <div className="assistant-tech-icon">
+                  <TechIcon id={item.id} short={item.short} color={item.color} />
+                </div>
+                <span className="assistant-tech-label">{item.label}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        <svg
+          viewBox="0 0 320 280"
+          className="assistant-presence-svg"
+          fill="none"
+          role="presentation"
+        >
+          <defs>
           <radialGradient
             id="assistant-card-skin"
             cx="0"
@@ -181,92 +295,44 @@ export default function AssistantFigure({
           >
             <feDropShadow dx="0" dy="8" stdDeviation="8" floodColor="#336cb8" floodOpacity="0.2" />
           </filter>
-        </defs>
+          </defs>
 
-        <ellipse className="assistant-character-shadow" cx="160" cy="254" rx="84" ry="16" />
+          <ellipse className="assistant-character-shadow" cx="160" cy="254" rx="84" ry="16" />
 
-        <g filter="url(#assistant-card-badge-shadow)">
-          <g className="assistant-character-badge assistant-character-badge-left">
-            <rect x="34" y="70" width="48" height="36" rx="12" fill="url(#assistant-card-badge)" />
-            <path d="M48 88h20M58 80v16" stroke="#ffffff" strokeLinecap="round" strokeWidth="3" />
-          </g>
-
-          <g className="assistant-character-badge assistant-character-badge-top">
-            <rect x="72" y="26" width="62" height="40" rx="14" fill="url(#assistant-card-badge)" />
-            <text
-              x="103"
-              y="52"
-              fill="#ffffff"
-              fontFamily="Arial, sans-serif"
-              fontSize="16"
-              fontWeight="700"
-              textAnchor="middle"
-            >
-              JS
-            </text>
-          </g>
-
-          <g className="assistant-character-badge assistant-character-badge-right">
-            <rect x="240" y="42" width="50" height="38" rx="12" fill="url(#assistant-card-badge)" />
+          <g className="assistant-character-figure" filter="url(#assistant-card-shadow)">
             <path
-              d="m254 61 7-7m0 0 7 7m-7-7v14m-7-7h14"
-              stroke="#ffffff"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2.8"
+              d="M117 136c12-12 27-18 43-18 22 0 38 6 49 18l17 55H95l22-55Z"
+              fill="url(#assistant-card-jacket)"
             />
-          </g>
-
-          <g className="assistant-character-badge assistant-character-badge-small">
-            <circle cx="58" cy="126" r="18" fill="url(#assistant-card-badge)" />
-            <text
-              x="58"
-              y="132"
+            <path
+              d="M133 140c8-6 18-9 28-9 11 0 21 3 29 9l-6 49h-46l-5-49Z"
+              fill="url(#assistant-card-shirt)"
+            />
+            <path
+              d="M146 139h11l-8 18-17 16-7-25c6-5 14-9 21-9Z"
+              fill="url(#assistant-card-jacket)"
+            />
+            <path
+              d="M174 139h-11l8 18 17 16 7-25c-6-5-14-9-21-9Z"
+              fill="url(#assistant-card-jacket)"
+            />
+            <path
+              d="M150 139h10l-5 11-12 13-8-15c4-5 9-8 15-9Z"
               fill="#ffffff"
-              fontFamily="Arial, sans-serif"
-              fontSize="12"
-              fontWeight="700"
-              textAnchor="middle"
-            >
-              AI
-            </text>
-          </g>
-        </g>
-
-        <g className="assistant-character-figure" filter="url(#assistant-card-shadow)">
-          <path
-            d="M117 136c12-12 27-18 43-18 22 0 38 6 49 18l17 55H95l22-55Z"
-            fill="url(#assistant-card-jacket)"
-          />
-          <path
-            d="M133 140c8-6 18-9 28-9 11 0 21 3 29 9l-6 49h-46l-5-49Z"
-            fill="url(#assistant-card-shirt)"
-          />
-          <path
-            d="M146 139h11l-8 18-17 16-7-25c6-5 14-9 21-9Z"
-            fill="url(#assistant-card-jacket)"
-          />
-          <path
-            d="M174 139h-11l8 18 17 16 7-25c-6-5-14-9-21-9Z"
-            fill="url(#assistant-card-jacket)"
-          />
-          <path
-            d="M150 139h10l-5 11-12 13-8-15c4-5 9-8 15-9Z"
-            fill="#ffffff"
-          />
-          <path
-            d="M170 139h-10l5 11 12 13 8-15c-4-5-9-8-15-9Z"
-            fill="#ffffff"
-          />
-          <path d="M156 137h8l10 55h-28l10-55Z" fill="url(#assistant-card-tie)" />
-          <path
-            d="M120 143c10 3 18 8 24 15l-15 31-26-6 17-40Z"
-            fill="url(#assistant-card-jacket-shine)"
-          />
-          <path
-            d="M201 145c-9 2-17 8-23 15l15 29 24-7-16-37Z"
-            fill="rgba(255,255,255,0.05)"
-          />
+            />
+            <path
+              d="M170 139h-10l5 11 12 13 8-15c-4-5-9-8-15-9Z"
+              fill="#ffffff"
+            />
+            <path d="M156 137h8l10 55h-28l10-55Z" fill="url(#assistant-card-tie)" />
+            <path
+              d="M120 143c10 3 18 8 24 15l-15 31-26-6 17-40Z"
+              fill="url(#assistant-card-jacket-shine)"
+            />
+            <path
+              d="M201 145c-9 2-17 8-23 15l15 29 24-7-16-37Z"
+              fill="rgba(255,255,255,0.05)"
+            />
 
           <path
             d="M100 170c10-13 22-19 35-20l19 14-16 19-42 2 4-15Z"
@@ -293,26 +359,26 @@ export default function AssistantFigure({
             fill="rgba(224,162,125,0.46)"
           />
 
-          <g className="assistant-character-laptop">
-            <path
-              d="M75 171c0-8 7-15 15-15h111c9 0 16 7 16 15v44c0 9-7 16-16 16H90c-8 0-15-7-15-16v-44Z"
-              fill="url(#assistant-card-laptop)"
-            />
-            <path
-              d="M88 180c0-5 4-10 10-10h95c6 0 10 5 10 10v28c0 6-4 10-10 10H98c-6 0-10-4-10-10v-28Z"
-              className="assistant-character-screen"
-              fill="url(#assistant-card-screen)"
-            />
-            <path
-              d="M72 225h148l-8 13c-2 4-6 6-11 6H92c-5 0-9-2-11-6l-9-13Z"
-              fill="url(#assistant-card-laptop-edge)"
-            />
-            <path
-              d="M103 183h79c6 0 10 5 10 10v6c-24-10-54-7-89 10v-16c0-5 4-10 10-10Z"
-              fill="rgba(255,255,255,0.32)"
-            />
-            <circle cx="147" cy="200" r="4.5" fill="#c2c8d0" />
-          </g>
+            <g className="assistant-character-laptop">
+              <path
+                d="M75 171c0-8 7-15 15-15h111c9 0 16 7 16 15v44c0 9-7 16-16 16H90c-8 0-15-7-15-16v-44Z"
+                fill="url(#assistant-card-laptop)"
+              />
+              <path
+                d="M88 180c0-5 4-10 10-10h95c6 0 10 5 10 10v28c0 6-4 10-10 10H98c-6 0-10-4-10-10v-28Z"
+                className="assistant-character-screen"
+                fill="url(#assistant-card-screen)"
+              />
+              <path
+                d="M72 225h148l-8 13c-2 4-6 6-11 6H92c-5 0-9-2-11-6l-9-13Z"
+                fill="url(#assistant-card-laptop-edge)"
+              />
+              <path
+                d="M103 183h79c6 0 10 5 10 10v6c-24-10-54-7-89 10v-16c0-5 4-10 10-10Z"
+                fill="rgba(255,255,255,0.32)"
+              />
+              <circle cx="147" cy="200" r="4.5" fill="#c2c8d0" />
+            </g>
 
           <path
             d="M142 108h36v33c0 10-8 18-18 18s-18-8-18-18v-33Z"
@@ -362,8 +428,9 @@ export default function AssistantFigure({
             strokeLinecap="round"
             strokeWidth="4"
           />
-        </g>
-      </svg>
+          </g>
+        </svg>
+      </div>
     </div>
   );
 }
