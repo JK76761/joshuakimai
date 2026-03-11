@@ -8,25 +8,21 @@ type AssistantFigureProps = {
 const techOrbits = [
   {
     id: "typescript",
-    label: "TypeScript",
     short: "TS",
     color: "#3178c6",
   },
   {
     id: "javascript",
-    label: "JavaScript",
     short: "JS",
     color: "#f7df1e",
   },
   {
     id: "react",
-    label: "React",
     short: "RE",
     color: "#61dafb",
   },
   {
     id: "next",
-    label: "Next.js",
     short: "NX",
     color: "#111111",
   },
@@ -127,12 +123,11 @@ export default function AssistantFigure({
             className={`assistant-tech-orbit assistant-tech-orbit-${index + 1}`}
             aria-hidden="true"
           >
-            <div className="assistant-tech-chip">
+            <div className="assistant-tech-chip" title={item.id}>
               <div className="assistant-tech-chip-body">
                 <div className="assistant-tech-icon">
                   <TechIcon id={item.id} short={item.short} color={item.color} />
                 </div>
-                <span className="assistant-tech-label">{item.label}</span>
               </div>
             </div>
           </div>
