@@ -39,9 +39,9 @@ const STOP_WORDS = new Set([
 const knowledgeBase: KnowledgeChunk[] = [
   {
     id: "profile",
-    content: `${profile.name} is a ${profile.headline}. ${profile.bio} Availability: ${profile.availability}. Skills: ${profile.skills.join(
+    content: `${profile.name} is a ${profile.headline}. ${profile.bio} Availability: ${profile.availability}. Target roles: ${profile.targetRoles.join(
       ", ",
-    )}.`,
+    )}. Focus areas: ${profile.focusAreas.join(" ")} Skills: ${profile.skills.join(", ")}.`,
   },
   {
     id: "ai",

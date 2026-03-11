@@ -16,6 +16,8 @@ export type Profile = {
   availability: string;
   socials: SocialLinks;
   skills: string[];
+  targetRoles: string[];
+  focusAreas: string[];
   highlights: string[];
 };
 

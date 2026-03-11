@@ -11,6 +11,16 @@
     "github": "https://github.com/JK76761",
     "linkedin": "https://www.linkedin.com/in/jio-kim-416301314"
   },
+  "targetRoles": [
+    "Graduate Software Engineer",
+    "Full-Stack Developer",
+    "IT Support / Support Engineer"
+  ],
+  "focusAreas": [
+    "Full-stack product delivery across Next.js web and React Native mobile applications.",
+    "Authentication troubleshooting, technical support, and root-cause analysis in live environments.",
+    "REST API integration, backend implementation, and end-to-end feature ownership."
+  ],
   "skills": [
     "Next.js",
     "React",

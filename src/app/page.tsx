@@ -3,7 +3,7 @@ import CopyEmailButton from "@/components/CopyEmailButton";
 import HomeNavbar from "@/components/HomeNavbar";
 import ProjectCard from "@/components/ProjectCard";
 import StackIconsShowcase from "@/components/StackIconsShowcase";
-import { experience, featuredProjects, profile } from "@/lib/data";
+import { education, experience, featuredProjects, profile } from "@/lib/data";
 import { formatDateLabel, getDisplayName } from "@/lib/format";
 
 const socialLinks = [
@@ -13,6 +13,7 @@ const socialLinks = [
 
 export default function HomePage() {
   const primaryExperience = experience[0];
+  const primaryEducation = education[0];
   const displayName = getDisplayName(profile.name);
 
   return (
@@ -74,6 +75,73 @@ export default function HomePage() {
           </div>
 
           <StackIconsShowcase />
+        </div>
+      </section>
+
+      <section id="snapshot" className="page-fade stagger-2 section-block space-y-8">
+        <div className="section-heading">
+          <p className="section-kicker">Snapshot</p>
+          <h2 className="section-title">Recruiter Snapshot</h2>
+          <p className="section-copy max-w-3xl">
+            The fastest overview of what I am building, what I am looking for,
+            and where I can contribute immediately.
+          </p>
+        </div>
+
+        <div className="snapshot-grid">
+          <article className="snapshot-card">
+            <p className="snapshot-label">Current role</p>
+            <p className="snapshot-value">
+              {primaryExperience?.role || "Software Developer"}
+            </p>
+            <p className="snapshot-note">
+              {primaryExperience?.company || "Currently active in product delivery work"}
+            </p>
+          </article>
+
+          <article className="snapshot-card">
+            <p className="snapshot-label">Open to</p>
+            <p className="snapshot-value">Graduate and support roles</p>
+            <p className="snapshot-note">{profile.availability}</p>
+          </article>
+
+          <article className="snapshot-card">
+            <p className="snapshot-label">Education</p>
+            <p className="snapshot-value">
+              {primaryEducation?.program || "Computer Science"}
+            </p>
+            <p className="snapshot-note">
+              {primaryEducation
+                ? `${primaryEducation.institution} • ${formatDateLabel(primaryEducation.endDate)}`
+                : "Queensland University of Technology"}
+            </p>
+          </article>
+
+          <article className="snapshot-card">
+            <p className="snapshot-label">Core stack</p>
+            <p className="snapshot-value">Next.js, React Native, Node.js</p>
+            <p className="snapshot-note">Web, mobile, APIs, and deployment workflows</p>
+          </article>
+        </div>
+
+        <div className="snapshot-panel-grid">
+          <article className="snapshot-panel">
+            <p className="snapshot-label">Target roles</p>
+            <ul className="snapshot-list">
+              {profile.targetRoles.map((role) => (
+                <li key={role}>{role}</li>
+              ))}
+            </ul>
+          </article>
+
+          <article className="snapshot-panel">
+            <p className="snapshot-label">What I bring</p>
+            <ul className="snapshot-list">
+              {profile.focusAreas.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
         </div>
       </section>
 

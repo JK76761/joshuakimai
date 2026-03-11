@@ -476,6 +476,93 @@ a {
   gap: 1.5rem;
 }
 
+.snapshot-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.snapshot-card,
+.snapshot-panel {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(245, 245, 243, 0.76));
+  border: 1px solid rgba(24, 26, 29, 0.08);
+  border-radius: 1.2rem;
+}
+
+.snapshot-card {
+  display: grid;
+  gap: 0.55rem;
+  min-height: 10.5rem;
+  padding: 1.15rem;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.snapshot-card:hover,
+.snapshot-panel:hover {
+  border-color: rgba(24, 26, 29, 0.14);
+  box-shadow: 0 16px 40px -30px rgba(28, 30, 34, 0.18);
+  transform: translateY(-2px);
+}
+
+.snapshot-label {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.snapshot-value {
+  color: var(--text-strong);
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.snapshot-note {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.snapshot-panel-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.snapshot-panel {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+.snapshot-list {
+  color: var(--text-primary);
+  display: grid;
+  gap: 0.75rem;
+  line-height: 1.75;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.snapshot-list li {
+  border-top: 1px solid rgba(24, 26, 29, 0.06);
+  padding-top: 0.75rem;
+}
+
+.snapshot-list li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
 .stack-orbit {
   align-items: center;
   aspect-ratio: 1;
@@ -2159,6 +2246,15 @@ a {
     gap: 0.55rem;
   }
 
+  .snapshot-card,
+  .snapshot-panel {
+    padding: 1rem;
+  }
+
+  .snapshot-card {
+    min-height: 0;
+  }
+
   .stack-orbit {
     margin-top: 0.75rem;
     max-width: 22rem;
@@ -2387,6 +2483,14 @@ a {
 @media (min-width: 900px) {
   .contact-grid {
     grid-template-columns: minmax(0, 1.05fr) minmax(19rem, 0.95fr);
+  }
+
+  .snapshot-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .snapshot-panel-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 
   .hero-showcase-grid {
