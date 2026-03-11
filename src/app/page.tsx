@@ -32,8 +32,7 @@ export default function HomePage() {
               Software Developer
             </p>
             <p className="max-w-2xl text-base leading-8 text-[var(--text-muted)]">
-              Building reliable web and mobile products with Next.js, React Native,
-              Node.js, and strong problem-solving across real production workflows.
+              {profile.tagline}
             </p>
 
             <div className="flex flex-wrap gap-3 pt-2">
